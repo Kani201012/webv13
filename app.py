@@ -5,7 +5,7 @@ import json
 
 # --- 1. APP CONFIGURATION ---
 st.set_page_config(
-    page_title="Titan v25.5 | Sovereign Architect", 
+    page_title="Titan v25.6 | Sovereign Architect", 
     layout="wide", 
     page_icon="💎",
     initial_sidebar_state="expanded"
@@ -62,7 +62,7 @@ st.markdown("""
 # --- 3. SIDEBAR: DESIGN STUDIO ---
 with st.sidebar:
     st.title("Titan Studio")
-    st.caption("v25.5 | Card Hierarchy Fix")
+    st.caption("v25.6 | Button Layout Fix")
     st.divider()
     
     with st.expander("🎭 1. Architecture DNA", expanded=True):
@@ -165,18 +165,35 @@ html, body {{ margin: 0; padding: 0; width: 100%; overflow-x: hidden; scroll-beh
 body {{ font-family: var(--b-font); color: #0f172a; line-height: 1.7; background: #fff; }}
 h1, h2, h3 {{ font-family: var(--h-font); font-weight: var(--h-weight); letter-spacing: var(--ls); text-transform: uppercase; line-height: 1.1; }}
 
+/* MAIN UI CLASSES */
 .hero-title {{ font-size: clamp(2rem, 8vw, 100px); text-shadow: 0 4px 20px rgba(0,0,0,0.4); }}
 .section-title {{ font-size: clamp(1.8rem, 6vw, 75px); color: var(--p); text-align: center; margin-bottom: 3rem; }}
-.btn-accent {{ background: var(--s); color: white !important; padding: 1.1rem 2.8rem; border-radius: var(--radius); font-weight: 900; transition: 0.4s; display: inline-block; text-align: center; border:none; text-decoration:none; cursor: pointer; box-shadow: 0 10px 20px -5px var(--s); }}
-.btn-accent:hover {{ transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 15px 30px -5px var(--s); }}
+
+/* FIXED: Button now displays as inline-block to respect margins */
+.btn-accent, .btn-primary {{ 
+    display: inline-block;
+    padding: 1.1rem 2.8rem; 
+    border-radius: var(--radius); 
+    font-weight: 900; 
+    transition: 0.4s; 
+    text-align: center; 
+    border: none; 
+    text-decoration: none; 
+    cursor: pointer; 
+    box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1); 
+}}
+.btn-accent {{ background: var(--s); color: white !important; box-shadow: 0 10px 20px -5px var(--s); }}
+.btn-primary {{ background: var(--p); color: white !important; }}
+
+.btn-accent:hover, .btn-primary:hover {{ transform: translateY(-3px); filter: brightness(1.1); }}
+
 .glass-nav {{ background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.08); width: 100%; position: fixed; top: 0; z-index: 9999; }}
 .hero-mask {{ background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('{img_h}'); background-size: cover; background-position: center; min-height: 90vh; display: flex; align-items: center; justify-content: center; width: 100%; padding: 120px 20px 60px 20px; }}
 
-/* ADJUSTED PRODUCT CARD CSS */
 .product-card {{ 
     background: white; 
     border-radius: var(--radius); 
-    padding: 1.5rem; /* Reduced from 2rem to give text more width */
+    padding: 1.5rem;
     border: 1px solid #f1f5f9; 
     box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); 
     transition: 0.3s; 
@@ -314,7 +331,7 @@ def build_sovereign_html(page_title, page_desc, content_body, is_home=False):
 if layout_dna == "Industrial Titan":
     idx_content = f"""
     <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10 uppercase tracking-tighter leading-none font-black">{hero_h}</h1><p class="text-lg md:text-3xl font-light mb-16 max-w-4xl mx-auto opacity-90 leading-tight">{seo_d}</p><a href="#inventory" class="btn-accent uppercase tracking-[0.4em] text-[10px] md:text-sm shadow-2xl" style="background:var(--p)">Direct Booking</a></div></section>
-    <section class="max-w-[1440px] mx-auto py-24 px-6 grid md:grid-cols-2 gap-24 items-center border-b text-left"><img src="{img_f}" class="shadow-2xl rounded-[var(--radius)] border-8 border-slate-50"><div><h2 class="section-title mb-12 uppercase tracking-tighter leading-none" style="color:var(--p); text-align:left;">Our Expertise</h2><div class="grid gap-6 text-left">{s_cards_html}</div><a href="about.html" class="btn-p mt-10 no-underline" style="background:var(--p); color:white; padding:1.2rem 3rem; border-radius:var(--radius);">Read History</a></div></section>
+    <section class="max-w-[1440px] mx-auto py-24 px-6 grid md:grid-cols-2 gap-24 items-center border-b text-left"><img src="{img_f}" class="shadow-2xl rounded-[var(--radius)] border-8 border-slate-50"><div><h2 class="section-title mb-12 uppercase tracking-tighter leading-none" style="color:var(--p); text-align:left;">Our Expertise</h2><div class="grid gap-6 text-left">{s_cards_html}</div><a href="about.html" class="btn-primary mt-10" style="padding:1.2rem 3rem;">Read History</a></div></section>
     <section id="inventory" class="py-32 px-6 max-w-[1440px] mx-auto text-center border-b"><h2 class="section-title mb-20 uppercase tracking-tighter">Live Inventory</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-4 gap-10 text-left"><p class="p-20 text-center text-slate-400 font-bold animate-pulse uppercase tracking-widest">Opening Data Hub...</p></div></section>
     <section class="py-32 px-6 max-w-7xl mx-auto text-center"><div class="grid md:grid-cols-2 gap-24 text-left"><div><h2 class="text-4xl font-black mb-16 uppercase tracking-tighter" style="color:var(--p)">Success</h2>{t_html}</div><div><h2 class="text-4xl font-black mb-16 uppercase tracking-tighter" style="color:var(--p)">Insights</h2>{f_html}</div></div></section>
     """
@@ -323,13 +340,13 @@ elif layout_dna == "Classic Royal":
     <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10 tracking-tighter leading-none font-serif normal-case italic" style="font-family: 'Playfair Display', serif;">{hero_h}</h1><p class="text-lg md:text-3xl mb-16 italic opacity-80 leading-tight">{seo_d}</p><a href="#inventory" class="btn-accent tracking-widest text-[10px] md:text-sm shadow-2xl">Enter Showroom</a></div></section>
     <section class="bg-white py-40 px-6 text-center border-b"><div class="max-w-4xl mx-auto"><h2 class="section-title mb-20 font-serif normal-case italic underline decoration-blue-600 underline-offset-8" style="color:var(--p)">Proven Reputation</h2>{t_html}</div></section>
     <section id="inventory" class="py-40 px-6 max-w-[1440px] mx-auto text-center border-b"><h2 class="section-title mb-24 font-serif normal-case italic" style="color:var(--p)">The Collection</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-3 gap-20"></div></section>
-    <section class="max-w-[1440px] mx-auto py-24 px-6 grid md:grid-cols-2 gap-24 items-center border-t border-slate-100 text-left"><div class="order-2 md:order-1"><h2 class="section-title mb-12" style="text-align:left;">Elite Expertise</h2><div class="grid gap-6">{s_cards_html}</div><a href="about.html" class="btn-p mt-10 no-underline" style="background:var(--p); color:white; padding:1.2rem 3rem; border-radius:var(--radius);">Read Our Legacy</a></div><img src="{img_f}" class="order-1 md:order-2 shadow-2xl rounded-[var(--radius)]"></section>
+    <section class="max-w-[1440px] mx-auto py-24 px-6 grid md:grid-cols-2 gap-24 items-center border-t border-slate-100 text-left"><div class="order-2 md:order-1"><h2 class="section-title mb-12" style="text-align:left;">Elite Expertise</h2><div class="grid gap-6">{s_cards_html}</div><a href="about.html" class="btn-primary mt-10" style="padding:1.2rem 3rem;">Read Our Legacy</a></div><img src="{img_f}" class="order-1 md:order-2 shadow-2xl rounded-[var(--radius)]"></section>
     """
 else: 
     idx_content = f"""
     <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10">{hero_h}</h1><p class="mb-10 opacity-70">{seo_d}</p><a href="#inventory" class="btn-accent shadow-2xl">Access Data Hub</a></div></section>
     <section class="p-10 max-w-[1440px] mx-auto grid md:grid-cols-3 gap-8 text-left">
-        <div class="md:col-span-2 bg-slate-900 p-20 rounded-[4rem] text-white flex flex-col justify-center shadow-2xl"><h2 class="text-7xl font-black mb-8 tracking-tighter uppercase leading-none">Authority Heritage</h2><p class="text-xl opacity-60 mb-10 italic">"Transforming industrial and luxury landscapes since inception."</p><a href="about.html" class="btn-p w-fit no-underline" style="background:var(--p); color:white; padding:1.2rem 3rem; border-radius:var(--radius);">Full Story</a></div>
+        <div class="md:col-span-2 bg-slate-900 p-20 rounded-[4rem] text-white flex flex-col justify-center shadow-2xl"><h2 class="text-7xl font-black mb-8 tracking-tighter uppercase leading-none">Authority Heritage</h2><p class="text-xl opacity-60 mb-10 italic">"Transforming industrial and luxury landscapes since inception."</p><a href="about.html" class="btn-primary" style="padding:1.2rem 3rem;">Full Story</a></div>
         <div class="bg-slate-50 p-12 rounded-[4rem] border shadow-xl flex flex-col justify-center"><p class="text-xs uppercase font-black tracking-widest opacity-30 mb-4 tracking-widest">Direct Contact</p><p class="text-4xl font-black leading-none mb-10" style="color:var(--p)">{biz_phone}</p><a href="tel:{biz_phone}" class="btn-accent w-full no-underline uppercase tracking-widest font-black shadow-2xl">Voice Connect</a></div>
     </section>
     <section id="inventory" class="py-40 px-6 max-w-[1440px] mx-auto text-center border-t border-slate-100"><h2 class="section-title mb-24 uppercase tracking-tighter">Exclusive Offers</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-4 gap-12 text-left"></div></section>
@@ -376,5 +393,5 @@ if st.button("🚀 DEPLOY & DOWNLOAD ASSETS"):
         z_f.writestr("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {prod_url}sitemap.xml")
         z_f.writestr("sitemap.xml", f"<?xml version='1.0' encoding='UTF-8'?><urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'><url><loc>{prod_url}index.html</loc></url><url><loc>{prod_url}about.html</loc></url></urlset>")
 
-    st.success("💎 TITAN SOVEREIGN v25.5 DEPLOYED. Zero Defects Confirmed.")
+    st.success("💎 TITAN SOVEREIGN v25.6 DEPLOYED. Zero Defects Confirmed.")
     st.download_button("📥 DOWNLOAD PLATINUM ASSET", z_b.getvalue(), f"{biz_name.lower().replace(' ', '_')}_final.zip")
