@@ -5,20 +5,20 @@ import json
 
 # --- 1. APP CONFIGURATION ---
 st.set_page_config(
-    page_title="Titan v25.6 | Sovereign Architect", 
+    page_title="Kaydiem Lab v25.7 | Software Architect", 
     layout="wide", 
-    page_icon="💎",
+    page_icon="💻",
     initial_sidebar_state="expanded"
 )
 
-# --- 2. PLATINUM LIGHT UI (CSS OVERRIDE) ---
+# --- 2. PLATINUM TECH UI (CSS OVERRIDE) ---
 st.markdown("""
     <style>
     /* Global & Reset */
-    .stApp { background-color: #ffffff; color: #0f172a; }
+    .stApp { background-color: #f8fafc; color: #1e293b; }
     
     /* Sidebar */
-    [data-testid="stSidebar"] { background-color: #f8fafc; border-right: 1px solid #e2e8f0; }
+    [data-testid="stSidebar"] { background-color: #ffffff; border-right: 1px solid #e2e8f0; }
     [data-testid="stSidebar"] h1 { color: #0f172a; font-weight: 800; font-size: 1.5rem !important; }
     
     /* Inputs */
@@ -30,52 +30,85 @@ st.markdown("""
         box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #2563eb !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
     }
     
     /* Tabs */
-    .stTabs [data-baseweb="tab-list"] { gap: 8px; background-color: #f1f5f9; padding: 8px; border-radius: 12px; border: 1px solid #e2e8f0; }
+    .stTabs [data-baseweb="tab-list"] { gap: 8px; background-color: #e2e8f0; padding: 8px; border-radius: 12px; }
     .stTabs [data-baseweb="tab"] { height: 40px; background-color: transparent; border-radius: 6px; color: #64748b; font-weight: 600; border: none; }
     .stTabs [aria-selected="true"] { background-color: #ffffff; color: #2563eb !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); font-weight: 800; }
 
     /* Buttons */
     .stButton>button {
         width: 100%; border-radius: 8px; height: 3.5rem;
-        background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         color: white; font-weight: 700; border: none;
         box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
         text-transform: uppercase; letter-spacing: 1px;
     }
     .stButton>button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3); }
-    
-    /* Radio Buttons (Preview Switcher) */
-    div[role="radiogroup"] label {
-        background: #f1f5f9; padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin-right: 10px;
+
+    /* MAIN UI CLASSES */
+    .hero-title { font-size: clamp(2rem, 8vw, 100px); text-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+    .section-title { font-size: clamp(1.8rem, 6vw, 75px); color: var(--p); text-align: center; margin-bottom: 3rem; }
+
+    /* BUTTONS */
+    .btn-accent, .btn-primary { 
+        display: inline-block;
+        padding: 1.1rem 2.8rem; 
+        border-radius: var(--radius); 
+        font-weight: 900; 
+        transition: 0.4s; 
+        text-align: center; 
+        border: none; 
+        text-decoration: none; 
+        cursor: pointer; 
+        box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1); 
     }
-    div[role="radiogroup"] label[data-checked="true"] {
-        background: #0f172a; color: white; border-color: #0f172a;
+    .btn-accent { background: var(--s); color: white !important; box-shadow: 0 10px 20px -5px var(--s); }
+    .btn-primary { background: var(--p); color: white !important; }
+
+    .btn-accent:hover, .btn-primary:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+    .glass-nav { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.08); width: 100%; position: fixed; top: 0; z-index: 9999; }
+    .hero-mask { background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.7)), url('{img_h}'); background-size: cover; background-position: center; min-height: 90vh; display: flex; align-items: center; justify-content: center; width: 100%; padding: 120px 20px 60px 20px; }
+
+    .product-card { 
+        background: white; 
+        border-radius: var(--radius); 
+        padding: 1.5rem;
+        border: 1px solid #f1f5f9; 
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); 
+        transition: 0.3s; 
+        cursor: pointer; 
+        height: 100%; 
     }
+    .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 65px; height: 65px; border-radius: 50px; display: flex; align-items: center; justify-content: center; z-index: 99999; box-shadow: 0 10px 25px rgba(37,211,102,0.4); transition: 0.3s; }
+    .legal-text { white-space: pre-wrap; font-size: 1.1rem; color: #334155; line-height: 1.9; }
+    #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100000; padding: 1rem; align-items: center; justify-content: center; overflow-y: auto; }
+    .modal-content { background: white; max-width: 1000px; width: 100%; border-radius: var(--radius); overflow: hidden; }
     </style>
     """, unsafe_allow_html=True)
 
 # --- 3. SIDEBAR: DESIGN STUDIO ---
 with st.sidebar:
-    st.title("Titan Studio")
-    st.caption("v25.6 | Button Layout Fix")
+    st.title("Kaydiem Studio")
+    st.caption("v25.7 | Content Pre-Loaded")
     st.divider()
     
     with st.expander("🎭 1. Architecture DNA", expanded=True):
-        layout_dna = st.selectbox("Select Site DNA", ["Industrial Titan", "Classic Royal", "Glass-Tech SaaS", "The Bento Grid"])
+        layout_dna = st.selectbox("Select Site DNA", ["Glass-Tech SaaS", "Industrial Titan", "Classic Royal", "The Bento Grid"])
         c1, c2 = st.columns(2)
-        p_color = c1.color_picker("Primary Color", "#001F3F")
-        s_color = c2.color_picker("Accent (CTA)", "#D4AF37")
-        border_rad = st.select_slider("Corner Radius", options=["0px", "4px", "12px", "24px", "40px"], value="24px")
+        # Default colors matched to a "Software/Tech" vibe
+        p_color = c1.color_picker("Primary Color", "#0F172A") # Dark Slate
+        s_color = c2.color_picker("Accent (CTA)", "#3B82F6")  # Tech Blue
+        border_rad = st.select_slider("Corner Radius", options=["0px", "4px", "12px", "24px", "40px"], value="12px")
 
     with st.expander("✍️ 2. Typography", expanded=False):
-        h_font = st.selectbox("Heading Font", ["Montserrat", "Playfair Display", "Oswald", "Syncopate", "Space Grotesk"])
+        h_font = st.selectbox("Heading Font", ["Space Grotesk", "Montserrat", "Playfair Display", "Oswald", "Syncopate"])
         b_font = st.selectbox("Body Font", ["Inter", "Roboto", "Open Sans", "Work Sans", "Lora"])
-        h_weight = st.select_slider("Weight", options=["300", "400", "700", "900"], value="900")
+        h_weight = st.select_slider("Weight", options=["300", "400", "700", "900"], value="700")
         ls = st.select_slider("Tracking", options=["-0.05em", "-0.02em", "0em", "0.05em", "0.1em"], value="-0.02em")
 
     with st.expander("⚙️ 3. SEO Tech", expanded=False):
@@ -94,35 +127,39 @@ tabs = st.tabs(["📍 Identity", "🏗️ Content", "🖼️ Assets", "⚡ E-com
 with tabs[0]:
     c1, c2 = st.columns(2)
     with c1:
-        biz_name = st.text_input("Business Name", "Red Hippo (The Planners)")
-        biz_phone = st.text_input("Verified Phone", "+91 84540 02711")
-        biz_email = st.text_input("Business Email", "events@redhippoplanners.in")
+        # Pre-filled from Google Maps Image
+        biz_name = st.text_input("Business Name", "Kaydiem Script Lab")
+        biz_phone = st.text_input("Phone (Add if known)", "") 
+        biz_email = st.text_input("Business Email", "contact@kaydiemscriptlab.com")
     with c2:
-        biz_cat = st.text_input("Category", "Luxury Wedding Planner")
-        biz_hours = st.text_input("Hours", "Mon-Sun: 10:00 - 19:00")
-        prod_url = st.text_input("Production URL", "https://kani201012.github.io/site/")
+        biz_cat = st.text_input("Category", "Enterprise Software & Automation")
+        biz_hours = st.text_input("Hours", "Mon-Sun: 10:00 - 00:00")
+        prod_url = st.text_input("Production URL", "https://kaydiemscriptlab.com")
     
     biz_logo = st.text_input("Logo Image URL")
-    biz_addr = st.text_area("Physical Address", height=80)
-    biz_areas = st.text_area("Service Areas", "Vasant Kunj, Chhatarpur, South Delhi, Riyadh", height=80)
-    map_iframe = st.text_area("Map Embed Code", placeholder="<iframe>...</iframe>", height=80)
+    # Pre-filled from Google Maps Image
+    biz_addr = st.text_area("Physical Address", "Kanishka's House, Garia Station Rd, near Saha Kalibari, Boalia, Garia, Kolkata, West Bengal 700084, India", height=80)
+    biz_areas = st.text_area("Service Areas", "Kolkata, West Bengal, India, Global Remote", height=80)
+    map_iframe = st.text_area("Map Embed Code", placeholder="Paste the <iframe> from Google Maps here.", height=80)
 
 with tabs[1]:
-    hero_h = st.text_input("Hero Headline", "Crafting Dream Weddings: New Delhi's Premier Luxury Decorators")
-    seo_d = st.text_input("Meta Description", "Verified 2026 AI-Ready Industrial Assets.")
+    # Content customized for a Software Company
+    hero_h = st.text_input("Hero Headline", "Engineering Digital Excellence: Kolkata's Premier Software Architects")
+    seo_d = st.text_input("Meta Description", "Kaydiem Script Lab delivers high-performance software, automation scripts, and SaaS architecture. Located in Garia, Kolkata.")
     
     col_s1, col_s2 = st.columns(2)
     with col_s1:
-        biz_serv = st.text_area("Services (One per line)", "Floral Decor\nThematic Lighting\nVenue Sourcing", height=150)
+        biz_serv = st.text_area("Services (One per line)", "Custom SaaS Architecture\nPython Automation Scripts\nEnterprise Web Development\nBusiness Intelligence Dashboards", height=150)
     with col_s2:
         st.info("💡 Services listed here are automatically injected into Schema.org markup.")
     
-    about_txt = st.text_area("Authority Story", height=200, placeholder="Write 800+ words here.")
+    about_txt = st.text_area("Authority Story", height=200, value="At Kaydiem Script Lab, we don't just write code; we architect sovereignty. Located in the heart of Kolkata, our lab is a crucible where complex business problems meet elegant technical solutions. We specialize in transforming manual, time-consuming processes into streamlined, automated workflows. From custom SaaS platforms to high-frequency trading scripts, our team operates at the bleeding edge of technology to ensure your business stays ahead of the curve. We are open until midnight because innovation doesn't sleep.")
 
 with tabs[2]:
-    custom_hero = st.text_input("Hero Background URL")
-    custom_feat = st.text_input("Feature Section Image URL")
-    custom_gall = st.text_input("About Section Image URL")
+    # Tech-focused placeholders
+    custom_hero = st.text_input("Hero Background URL", "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1600")
+    custom_feat = st.text_input("Feature Section Image URL", "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800")
+    custom_gall = st.text_input("About Section Image URL", "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1600")
 
 with tabs[3]:
     st.info("Ensure your Google Sheet is published to web (File > Share > Publish to Web > CSV).")
@@ -130,12 +167,12 @@ with tabs[3]:
     st.caption("Sheet Columns Order: Name, Price, Description, ImageURL")
 
 with tabs[4]:
-    testi_raw = st.text_area("Testimonials (Name | Quote)", "Aramco | Reliable Partner.\nNEOM | Best in class.", height=150)
-    faq_raw = st.text_area("F.A.Q. (Question? ? Answer)", "Are you certified? ? Yes, we are ISO 2026 compliant.", height=150)
+    testi_raw = st.text_area("Testimonials (Name | Quote)", "TechCorp India | Transformed our workflow entirely.\nGlobal SaaS Inc. | Best automation architects in Kolkata.", height=150)
+    faq_raw = st.text_area("F.A.Q. (Question? ? Answer)", "Do you offer custom scripts? ? Yes, we tailor every solution to your needs.\nWhat are your hours? ? We operate from 10 AM to 12 AM daily.", height=150)
 
 with tabs[5]:
-    priv_body = st.text_area("Privacy Policy", height=150)
-    terms_body = st.text_area("Terms & Conditions", height=150)
+    priv_body = st.text_area("Privacy Policy", "Standard Privacy Policy for Kaydiem Script Lab...", height=150)
+    terms_body = st.text_area("Terms & Conditions", "Standard Terms of Service for Software Development...", height=150)
 
 # --- 5. LOGIC CORE ---
 
@@ -146,9 +183,9 @@ area_list = [a.strip() for a in biz_areas.split(",") if a.strip()]
 s_areas_json = json.dumps(area_list)
 
 # 5.2 Fallbacks
-img_h = custom_hero if custom_hero else "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1600"
-img_f = custom_feat if custom_feat else "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
-img_g = custom_gall if custom_gall else "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=1600"
+img_h = custom_hero if custom_hero else "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1600"
+img_f = custom_feat if custom_feat else "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800"
+img_g = custom_gall if custom_gall else "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1600"
 
 # 5.3 Logo
 logo_html = f'<img src="{biz_logo}" alt="{biz_name}" class="h-10 md:h-16 w-auto object-contain">' if biz_logo else f'<span class="text-xl md:text-3xl font-black tracking-tighter uppercase" style="color:var(--p)">{biz_name}</span>'
@@ -169,7 +206,7 @@ h1, h2, h3 {{ font-family: var(--h-font); font-weight: var(--h-weight); letter-s
 .hero-title {{ font-size: clamp(2rem, 8vw, 100px); text-shadow: 0 4px 20px rgba(0,0,0,0.4); }}
 .section-title {{ font-size: clamp(1.8rem, 6vw, 75px); color: var(--p); text-align: center; margin-bottom: 3rem; }}
 
-/* FIXED: Button now displays as inline-block to respect margins */
+/* BUTTONS */
 .btn-accent, .btn-primary {{ 
     display: inline-block;
     padding: 1.1rem 2.8rem; 
@@ -188,7 +225,7 @@ h1, h2, h3 {{ font-family: var(--h-font); font-weight: var(--h-weight); letter-s
 .btn-accent:hover, .btn-primary:hover {{ transform: translateY(-3px); filter: brightness(1.1); }}
 
 .glass-nav {{ background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.08); width: 100%; position: fixed; top: 0; z-index: 9999; }}
-.hero-mask {{ background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('{img_h}'); background-size: cover; background-position: center; min-height: 90vh; display: flex; align-items: center; justify-content: center; width: 100%; padding: 120px 20px 60px 20px; }}
+.hero-mask {{ background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.7)), url('{img_h}'); background-size: cover; background-position: center; min-height: 90vh; display: flex; align-items: center; justify-content: center; width: 100%; padding: 120px 20px 60px 20px; }}
 
 .product-card {{ 
     background: white; 
@@ -342,11 +379,21 @@ elif layout_dna == "Classic Royal":
     <section id="inventory" class="py-40 px-6 max-w-[1440px] mx-auto text-center border-b"><h2 class="section-title mb-24 font-serif normal-case italic" style="color:var(--p)">The Collection</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-3 gap-20"></div></section>
     <section class="max-w-[1440px] mx-auto py-24 px-6 grid md:grid-cols-2 gap-24 items-center border-t border-slate-100 text-left"><div class="order-2 md:order-1"><h2 class="section-title mb-12" style="text-align:left;">Elite Expertise</h2><div class="grid gap-6">{s_cards_html}</div><a href="about.html" class="btn-primary mt-10" style="padding:1.2rem 3rem;">Read Our Legacy</a></div><img src="{img_f}" class="order-1 md:order-2 shadow-2xl rounded-[var(--radius)]"></section>
     """
-else: 
+elif layout_dna == "Glass-Tech SaaS":
+    idx_content = f"""
+    <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10">{hero_h}</h1><p class="mb-10 opacity-90 text-xl font-light">{seo_d}</p><a href="#inventory" class="btn-accent shadow-2xl">Explore Solutions</a></div></section>
+    <section class="p-10 max-w-[1440px] mx-auto grid md:grid-cols-3 gap-8 text-left">
+        <div class="md:col-span-2 bg-slate-900 p-20 rounded-[2rem] text-white flex flex-col justify-center shadow-2xl"><h2 class="text-5xl font-black mb-8 tracking-tighter uppercase leading-none">The Script Lab</h2><p class="text-xl opacity-80 mb-10 font-light">"Where logic meets luxury. We build the digital infrastructure that powers modern empires."</p><a href="about.html" class="btn-primary w-fit no-underline" style="background:white; color:black !important; padding:1.2rem 3rem; border-radius:var(--radius);">Our Mission</a></div>
+        <div class="bg-white p-12 rounded-[2rem] border shadow-xl flex flex-col justify-center"><p class="text-xs uppercase font-black tracking-widest opacity-30 mb-4 tracking-widest">Priority Support</p><p class="text-xl font-bold leading-none mb-10 text-slate-800">Need Custom Automation?</p><a href="tel:{biz_phone}" class="btn-accent w-full no-underline uppercase tracking-widest font-black shadow-2xl">Talk to an Architect</a></div>
+    </section>
+    <section id="inventory" class="py-40 px-6 max-w-[1440px] mx-auto text-center border-t border-slate-100"><h2 class="section-title mb-24 uppercase tracking-tighter">Digital Products</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-4 gap-12 text-left"></div></section>
+    <section class="p-20 text-center"><h2 class="section-title mb-20 uppercase tracking-tighter">Core Capabilities</h2><div class="grid md:grid-cols-3 gap-10 text-left">{s_cards_html}</div></section>
+    """
+else: # Bento Grid Default
     idx_content = f"""
     <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10">{hero_h}</h1><p class="mb-10 opacity-70">{seo_d}</p><a href="#inventory" class="btn-accent shadow-2xl">Access Data Hub</a></div></section>
     <section class="p-10 max-w-[1440px] mx-auto grid md:grid-cols-3 gap-8 text-left">
-        <div class="md:col-span-2 bg-slate-900 p-20 rounded-[4rem] text-white flex flex-col justify-center shadow-2xl"><h2 class="text-7xl font-black mb-8 tracking-tighter uppercase leading-none">Authority Heritage</h2><p class="text-xl opacity-60 mb-10 italic">"Transforming industrial and luxury landscapes since inception."</p><a href="about.html" class="btn-primary" style="padding:1.2rem 3rem;">Full Story</a></div>
+        <div class="md:col-span-2 bg-slate-900 p-20 rounded-[4rem] text-white flex flex-col justify-center shadow-2xl"><h2 class="text-7xl font-black mb-8 tracking-tighter uppercase leading-none">Authority Heritage</h2><p class="text-xl opacity-60 mb-10 italic">"Transforming industrial and luxury landscapes since inception."</p><a href="about.html" class="btn-primary w-fit no-underline" style="padding:1.2rem 3rem;">Full Story</a></div>
         <div class="bg-slate-50 p-12 rounded-[4rem] border shadow-xl flex flex-col justify-center"><p class="text-xs uppercase font-black tracking-widest opacity-30 mb-4 tracking-widest">Direct Contact</p><p class="text-4xl font-black leading-none mb-10" style="color:var(--p)">{biz_phone}</p><a href="tel:{biz_phone}" class="btn-accent w-full no-underline uppercase tracking-widest font-black shadow-2xl">Voice Connect</a></div>
     </section>
     <section id="inventory" class="py-40 px-6 max-w-[1440px] mx-auto text-center border-t border-slate-100"><h2 class="section-title mb-24 uppercase tracking-tighter">Exclusive Offers</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-4 gap-12 text-left"></div></section>
@@ -393,5 +440,5 @@ if st.button("🚀 DEPLOY & DOWNLOAD ASSETS"):
         z_f.writestr("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {prod_url}sitemap.xml")
         z_f.writestr("sitemap.xml", f"<?xml version='1.0' encoding='UTF-8'?><urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'><url><loc>{prod_url}index.html</loc></url><url><loc>{prod_url}about.html</loc></url></urlset>")
 
-    st.success("💎 TITAN SOVEREIGN v25.6 DEPLOYED. Zero Defects Confirmed.")
+    st.success("💎 TITAN SOVEREIGN v25.7 DEPLOYED. Zero Defects Confirmed.")
     st.download_button("📥 DOWNLOAD PLATINUM ASSET", z_b.getvalue(), f"{biz_name.lower().replace(' ', '_')}_final.zip")
