@@ -5,13 +5,13 @@ import json
 
 # --- 1. APP CONFIGURATION ---
 st.set_page_config(
-    page_title="Kaydiem Lab v25.7 | Software Architect", 
+    page_title="Titan v25.8 | Universal Factory", 
     layout="wide", 
-    page_icon="💻",
+    page_icon="🏭",
     initial_sidebar_state="expanded"
 )
 
-# --- 2. PLATINUM TECH UI (CSS OVERRIDE) ---
+# --- 2. PLATINUM LIGHT UI (CSS OVERRIDE) ---
 st.markdown("""
     <style>
     /* Global & Reset */
@@ -93,16 +93,15 @@ st.markdown("""
 
 # --- 3. SIDEBAR: DESIGN STUDIO ---
 with st.sidebar:
-    st.title("Kaydiem Studio")
-    st.caption("v25.7 | Content Pre-Loaded")
+    st.title("Titan Factory")
+    st.caption("v25.8 | Universal Engine")
     st.divider()
     
     with st.expander("🎭 1. Architecture DNA", expanded=True):
-        layout_dna = st.selectbox("Select Site DNA", ["Glass-Tech SaaS", "Industrial Titan", "Classic Royal", "The Bento Grid"])
+        layout_dna = st.selectbox("Select Client Vibe", ["Glass-Tech SaaS", "Industrial Titan", "Classic Royal", "The Bento Grid"])
         c1, c2 = st.columns(2)
-        # Default colors matched to a "Software/Tech" vibe
-        p_color = c1.color_picker("Primary Color", "#0F172A") # Dark Slate
-        s_color = c2.color_picker("Accent (CTA)", "#3B82F6")  # Tech Blue
+        p_color = c1.color_picker("Primary Color", "#0F172A") 
+        s_color = c2.color_picker("Accent (CTA)", "#3B82F6")  
         border_rad = st.select_slider("Corner Radius", options=["0px", "4px", "12px", "24px", "40px"], value="12px")
 
     with st.expander("✍️ 2. Typography", expanded=False):
@@ -116,7 +115,7 @@ with st.sidebar:
         canonical_check = st.checkbox("Force Canonical", value=True)
 
     st.divider()
-    st.caption("Kaydiem Script Lab")
+    st.info("Input any client data below. The engine will adapt.")
 
 # --- 4. MAIN INTERFACE ---
 st.title("Titan Supreme Engine")
@@ -127,39 +126,38 @@ tabs = st.tabs(["📍 Identity", "🏗️ Content", "🖼️ Assets", "⚡ E-com
 with tabs[0]:
     c1, c2 = st.columns(2)
     with c1:
-        # Pre-filled from Google Maps Image
-        biz_name = st.text_input("Business Name", "Kaydiem Script Lab")
-        biz_phone = st.text_input("Phone (Add if known)", "") 
-        biz_email = st.text_input("Business Email", "contact@kaydiemscriptlab.com")
+        # UNIVERSAL DEFAULTS
+        biz_name = st.text_input("Business Name", "Your Client Business Name")
+        biz_phone = st.text_input("Phone Number", "+1 555 0199 222") 
+        biz_email = st.text_input("Business Email", "contact@client-domain.com")
     with c2:
-        biz_cat = st.text_input("Category", "Enterprise Software & Automation")
-        biz_hours = st.text_input("Hours", "Mon-Sun: 10:00 - 00:00")
-        prod_url = st.text_input("Production URL", "https://kaydiemscriptlab.com")
+        biz_cat = st.text_input("Category", "Professional Services")
+        biz_hours = st.text_input("Hours", "Mon-Fri: 09:00 - 18:00")
+        prod_url = st.text_input("Production URL", "https://client-domain.com")
     
-    biz_logo = st.text_input("Logo Image URL")
-    # Pre-filled from Google Maps Image
-    biz_addr = st.text_area("Physical Address", "Kanishka's House, Garia Station Rd, near Saha Kalibari, Boalia, Garia, Kolkata, West Bengal 700084, India", height=80)
-    biz_areas = st.text_area("Service Areas", "Kolkata, West Bengal, India, Global Remote", height=80)
+    biz_logo = st.text_input("Logo Image URL (PNG/SVG)")
+    biz_addr = st.text_area("Physical Address", "123 Business Rd, Tech Park, Suite 400, New York, NY 10001", height=80)
+    biz_areas = st.text_area("Service Areas", "New York, Brooklyn, Queens, Manhattan", height=80)
     map_iframe = st.text_area("Map Embed Code", placeholder="Paste the <iframe> from Google Maps here.", height=80)
 
 with tabs[1]:
-    # Content customized for a Software Company
-    hero_h = st.text_input("Hero Headline", "Engineering Digital Excellence: Kolkata's Premier Software Architects")
-    seo_d = st.text_input("Meta Description", "Kaydiem Script Lab delivers high-performance software, automation scripts, and SaaS architecture. Located in Garia, Kolkata.")
+    # Universal Content
+    hero_h = st.text_input("Hero Headline", "Leading the Future of [Industry Name]")
+    seo_d = st.text_input("Meta Description", "Premium services provided by [Business Name]. Serving the local area with excellence since 2010.")
     
     col_s1, col_s2 = st.columns(2)
     with col_s1:
-        biz_serv = st.text_area("Services (One per line)", "Custom SaaS Architecture\nPython Automation Scripts\nEnterprise Web Development\nBusiness Intelligence Dashboards", height=150)
+        biz_serv = st.text_area("Services (One per line)", "Core Service One\nCore Service Two\nSpecialty Service Three\nConsultation", height=150)
     with col_s2:
         st.info("💡 Services listed here are automatically injected into Schema.org markup.")
     
-    about_txt = st.text_area("Authority Story", height=200, value="At Kaydiem Script Lab, we don't just write code; we architect sovereignty. Located in the heart of Kolkata, our lab is a crucible where complex business problems meet elegant technical solutions. We specialize in transforming manual, time-consuming processes into streamlined, automated workflows. From custom SaaS platforms to high-frequency trading scripts, our team operates at the bleeding edge of technology to ensure your business stays ahead of the curve. We are open until midnight because innovation doesn't sleep.")
+    about_txt = st.text_area("Authority Story", height=200, value="[Business Name] was founded on a simple principle: excellence in every detail. With years of experience in the [Industry] sector, our team is dedicated to providing top-tier solutions to our clients. We believe in transparency, quality, and results. Whether you are a small business or a large enterprise, our tailored approach ensures your specific needs are met with precision.")
 
 with tabs[2]:
-    # Tech-focused placeholders
-    custom_hero = st.text_input("Hero Background URL", "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1600")
-    custom_feat = st.text_input("Feature Section Image URL", "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800")
-    custom_gall = st.text_input("About Section Image URL", "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1600")
+    # Generic Placeholders
+    custom_hero = st.text_input("Hero Background URL", "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1600")
+    custom_feat = st.text_input("Feature Section Image URL", "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800")
+    custom_gall = st.text_input("About Section Image URL", "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1600")
 
 with tabs[3]:
     st.info("Ensure your Google Sheet is published to web (File > Share > Publish to Web > CSV).")
@@ -167,12 +165,12 @@ with tabs[3]:
     st.caption("Sheet Columns Order: Name, Price, Description, ImageURL")
 
 with tabs[4]:
-    testi_raw = st.text_area("Testimonials (Name | Quote)", "TechCorp India | Transformed our workflow entirely.\nGlobal SaaS Inc. | Best automation architects in Kolkata.", height=150)
-    faq_raw = st.text_area("F.A.Q. (Question? ? Answer)", "Do you offer custom scripts? ? Yes, we tailor every solution to your needs.\nWhat are your hours? ? We operate from 10 AM to 12 AM daily.", height=150)
+    testi_raw = st.text_area("Testimonials (Name | Quote)", "Client A | They did an amazing job.\nClient B | Highly recommended professionals.", height=150)
+    faq_raw = st.text_area("F.A.Q. (Question? ? Answer)", "Do you offer quotes? ? Yes, contact us for a free quote.\nWhere are you located? ? See our contact page for details.", height=150)
 
 with tabs[5]:
-    priv_body = st.text_area("Privacy Policy", "Standard Privacy Policy for Kaydiem Script Lab...", height=150)
-    terms_body = st.text_area("Terms & Conditions", "Standard Terms of Service for Software Development...", height=150)
+    priv_body = st.text_area("Privacy Policy", "Standard Privacy Policy content goes here...", height=150)
+    terms_body = st.text_area("Terms & Conditions", "Standard Terms of Service content goes here...", height=150)
 
 # --- 5. LOGIC CORE ---
 
@@ -183,9 +181,9 @@ area_list = [a.strip() for a in biz_areas.split(",") if a.strip()]
 s_areas_json = json.dumps(area_list)
 
 # 5.2 Fallbacks
-img_h = custom_hero if custom_hero else "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1600"
-img_f = custom_feat if custom_feat else "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800"
-img_g = custom_gall if custom_gall else "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1600"
+img_h = custom_hero if custom_hero else "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1600"
+img_f = custom_feat if custom_feat else "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800"
+img_g = custom_gall if custom_gall else "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1600"
 
 # 5.3 Logo
 logo_html = f'<img src="{biz_logo}" alt="{biz_name}" class="h-10 md:h-16 w-auto object-contain">' if biz_logo else f'<span class="text-xl md:text-3xl font-black tracking-tighter uppercase" style="color:var(--p)">{biz_name}</span>'
@@ -440,5 +438,5 @@ if st.button("🚀 DEPLOY & DOWNLOAD ASSETS"):
         z_f.writestr("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {prod_url}sitemap.xml")
         z_f.writestr("sitemap.xml", f"<?xml version='1.0' encoding='UTF-8'?><urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'><url><loc>{prod_url}index.html</loc></url><url><loc>{prod_url}about.html</loc></url></urlset>")
 
-    st.success("💎 TITAN SOVEREIGN v25.7 DEPLOYED. Zero Defects Confirmed.")
+    st.success("💎 TITAN SOVEREIGN v25.8 DEPLOYED. Zero Defects Confirmed.")
     st.download_button("📥 DOWNLOAD PLATINUM ASSET", z_b.getvalue(), f"{biz_name.lower().replace(' ', '_')}_final.zip")
