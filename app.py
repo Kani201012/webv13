@@ -105,4 +105,94 @@ if st.button("🚀 DEPLOY AUDIT-PROOF 5-PAGE SITE"):
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     {v_tag}
-    <title>{title} | {b
+    <title>{title} | {biz_name}</title>
+    <meta name="description" content="{desc}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@700;900&family={b_font.replace(' ', '+')}:wght@400;700&display=swap" rel="stylesheet">
+    <style>{theme_css}</style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <nav class="glass-nav p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-xl font-black uppercase" style="color:var(--p)">{biz_name}</a>
+            <div class="hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-widest">
+                <a href="index.html">Home</a> <a href="about.html">About</a> <a href="contact.html">Contact</a>
+            </div>
+            <a href="tel:{biz_phone}" class="bg-slate-900 text-white px-5 py-2 rounded-full font-bold text-[10px]">CALL</a>
+        </div>
+    </nav>
+    <main class="flex-grow">{content}</main>
+    <footer class="bg-slate-950 text-slate-500 py-20 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 text-left text-sm">
+            <div><h4 class="text-white font-bold mb-4 uppercase text-xs">Identity</h4><p>{biz_addr}</p><p class="mt-4">{biz_phone}<br>{biz_email}</p></div>
+            <div><h4 class="text-white font-bold mb-4 uppercase text-xs">Technical Hub</h4><ul class="space-y-2 uppercase text-[10px]"><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms & Conditions</a></li></ul></div>
+            <div class="md:text-right"><p class="opacity-30 italic underline mb-4">Architected by Kaydiem Script Lab</p><p class="text-white font-bold">Verified 2026 Asset</p></div>
+        </div>
+    </footer>
+</body></html>"""
+
+    # --- INDIVIDUAL PAGES ---
+    
+    # index.html
+    idx_content = f"""
+    <section class="hero-mask px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-7xl font-black mb-8 leading-tight">{hero_h}</h1>
+            <p class="text-lg md:text-xl mb-12 opacity-90">{seo_d}</p>
+            <a href="contact.html" class="btn-accent uppercase tracking-widest text-xs">Request Technical Brief</a>
+        </div>
+    </section>
+    <section class="max-w-7xl mx-auto py-24 px-6">
+        <h2 class="text-4xl font-black text-center mb-16 uppercase tracking-tighter" style="color:var(--p)">Our Services</h2>
+        <div class="grid md:grid-cols-3 gap-10">
+            <div class="p-10 bg-slate-50 rounded-3xl border"> <h3 class="font-bold text-xl mb-4">{s1_n}</h3> <p class="text-slate-600 text-sm">{s1_d}</p> </div>
+            <div class="p-10 bg-slate-50 rounded-3xl border"> <h3 class="font-bold text-xl mb-4">{s2_n}</h3> <p class="text-slate-600 text-sm">{s2_d}</p> </div>
+            <div class="p-10 bg-slate-50 rounded-3xl border"> <h3 class="font-bold text-xl mb-4">{s3_n}</h3> <p class="text-slate-600 text-sm">{s3_d}</p> </div>
+        </div>
+    </section>
+    """
+
+    # about.html
+    about_content = f"""
+    <section class="pt-40 pb-20 px-6 max-w-5xl mx-auto">
+        <h1 class="text-5xl font-black mb-10" style="color:var(--p)">About {biz_name}</h1>
+        <div class="text-xl leading-relaxed text-slate-700 legal-text mb-20">{about_txt}</div>
+        <img src="{feat_img}" class="w-full h-[500px] object-cover rounded-[3rem] shadow-2xl">
+    </section>
+    """
+
+    # contact.html
+    contact_content = f"""
+    <section class="pt-40 pb-20 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-20">
+            <div>
+                <h1 class="text-5xl font-black mb-6" style="color:var(--p)">Get In Touch</h1>
+                <p class="text-xl text-slate-500 mb-10 italic">Certified Industrial Support for Riyadh Industrial Zones.</p>
+                <div class="space-y-6 text-lg">
+                    <p><b>📍 Address:</b><br>{biz_addr}</p>
+                    <p><b>📞 Call Us:</b><br>{biz_phone}</p>
+                    <p><b>📧 Email:</b><br>{biz_email}</p>
+                    <p><b>⏰ Hours:</b><br>{biz_hours}</p>
+                    <a href="{wa_url}" class="btn-accent w-full mt-6">CHAT ON WHATSAPP</a>
+                </div>
+            </div>
+            <div class="rounded-[3rem] overflow-hidden border-8 border-slate-50 shadow-2xl bg-slate-100 min-h-[400px]">
+                {map_iframe}
+            </div>
+        </div>
+    </section>
+    """
+
+    # --- ZIP OUTPUT ---
+    z_buf = io.BytesIO()
+    with zipfile.ZipFile(z_buf, "a", zipfile.ZIP_DEFLATED, False) as zf:
+        zf.writestr("index.html", get_layout("Home", seo_d, idx_content, True))
+        zf.writestr("about.html", get_layout("About Us", "Our History", about_content))
+        zf.writestr("contact.html", get_layout("Contact", "Location", contact_content))
+        zf.writestr("privacy.html", get_layout("Privacy", "Legal", f"<div class='pt-40 p-20 legal-text'><h1>Privacy</h1>{priv_body}</div>"))
+        zf.writestr("terms.html", get_layout("Terms", "Legal", f"<div class='pt-40 p-20 legal-text'><h1>Terms</h1>{terms_body}</div>"))
+        zf.writestr("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {prod_url}sitemap.xml")
+        zf.writestr("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{prod_url}index.html</loc></url></urlset>')
+
+    st.success("💎 TITAN SUPREME v13.1 DEPLOYED. Roast Addressed. Integrity 100%.")
+    st.download_button("📥 DOWNLOAD COMPLETE 5-PAGE PACKAGE", z_buf.getvalue(), f"{biz_name.lower()}_v13_1.zip")
