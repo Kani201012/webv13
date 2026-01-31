@@ -5,7 +5,7 @@ import json
 
 # --- 1. APP CONFIGURATION ---
 st.set_page_config(
-    page_title="Titan v25.0 | Sovereign Architect", 
+    page_title="Titan v25.4 | Sovereign Architect", 
     layout="wide", 
     page_icon="💎",
     initial_sidebar_state="expanded"
@@ -62,7 +62,7 @@ st.markdown("""
 # --- 3. SIDEBAR: DESIGN STUDIO ---
 with st.sidebar:
     st.title("Titan Studio")
-    st.caption("v25.3 | Platinum Core")
+    st.caption("v25.4 | Fixed Parser")
     st.divider()
     
     with st.expander("🎭 1. Architecture DNA", expanded=True):
@@ -192,22 +192,30 @@ def build_sovereign_html(page_title, page_desc, content_body, is_home=False):
     if is_home and sheet_url:
         dyn_script = f"""
         <script>
-        // Titan v25.3 CSV Parser (Handles "Name, Item", "$1,200", etc.)
-        function parseCSV(str) {{
-            const arr = [];
-            let quote = false;
-            let col = 0, c = 0;
-            for (; c < str.length; c++) {{
-                let cc = str[c], nc = str[c+1];
-                arr[col] = arr[col] || '';
-                if (cc == '"' && quote && nc == '"') {{ arr[col] += cc; ++c; continue; }}
-                if (cc == '"') {{ quote = !quote; continue; }}
-                if (cc == ',' && !quote) {{ ++col; continue; }}
-                if (cc == '\\r' && nc == '\\n' && !quote) {{ ++col; ++c; continue; }}
-                if (cc == '\\n' && !quote) {{ ++col; continue; }}
-                arr[col] += cc;
+        // Titan v25.4 CSV Parser (Correctly handles commas inside quotes AND ignores spaces as delimiters)
+        function parseCSVLine(line) {{
+            const result = [];
+            let current = '';
+            let inQuote = false;
+            
+            for (let i = 0; i < line.length; i++) {{
+                const char = line[i];
+                if (char === '"') {{
+                    if (inQuote && line[i + 1] === '"') {{
+                        current += '"'; // Double quote escape
+                        i++;
+                    }} else {{
+                        inQuote = !inQuote;
+                    }}
+                }} else if (char === ',' && !inQuote) {{
+                    result.push(current.trim());
+                    current = '';
+                }} else {{
+                    current += char;
+                }}
             }}
-            return arr;
+            result.push(current.trim());
+            return result;
         }}
 
         let currentProducts = [];
@@ -215,7 +223,6 @@ def build_sovereign_html(page_title, page_desc, content_body, is_home=False):
             try {{
                 const response = await fetch('{sheet_url}');
                 const csvText = await response.text();
-                // Basic clean up
                 const lines = csvText.split(/\\r\\n|\\n/);
                 const container = document.getElementById('live-data-container');
                 if(!container) return;
@@ -223,22 +230,22 @@ def build_sovereign_html(page_title, page_desc, content_body, is_home=False):
                 container.innerHTML = "";
                 // Skip header (i=1)
                 for (let i = 1; i < lines.length; i++) {{
-                    // Use the custom regex parser logic implicitly or simple split if no quotes
-                    // Here we use a robust regex match for CSV lines
-                    let parts = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-                    // Fallback to simple split if regex fails (simple CSV)
-                    if (!parts) parts = lines[i].split(',');
+                    if (!lines[i].trim()) continue;
                     
-                    // Cleanup quotes
-                    parts = parts.map(p => p.replace(/^"|"$/g, '').trim());
+                    const parts = parseCSVLine(lines[i]);
+                    
+                    // FIXED: Auto-detects image in Col D (index 3) OR Col G (index 6)
+                    let imgUrl = "{img_f}";
+                    if (parts[3] && parts[3].length > 5) imgUrl = parts[3];
+                    else if (parts[6] && parts[6].length > 5) imgUrl = parts[6];
 
                     if (parts.length >= 2) {{
                         const p = {{ 
                             id: i, 
-                            name: parts[0], 
-                            price: parts[1], 
+                            name: parts[0] || "Unknown Item", 
+                            price: parts[1] || "On Request", 
                             desc: (parts[2] || ""), 
-                            img1: (parts[3] || "{img_f}") 
+                            img1: imgUrl
                         }};
                         currentProducts.push(p);
                         container.innerHTML += `
@@ -343,7 +350,6 @@ nf_content = "<div class='py-64 text-center'><h1 class='text-[150px] font-black 
 st.divider()
 st.subheader("⚡ Instant Preview")
 
-# FIX: Added Page Selection Radio Button
 preview_mode = st.radio("Select Page to Preview", ["Home", "About", "Contact", "Privacy", "Terms"], horizontal=True)
 
 if preview_mode == "Home":
@@ -372,5 +378,5 @@ if st.button("🚀 DEPLOY & DOWNLOAD ASSETS"):
         z_f.writestr("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {prod_url}sitemap.xml")
         z_f.writestr("sitemap.xml", f"<?xml version='1.0' encoding='UTF-8'?><urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'><url><loc>{prod_url}index.html</loc></url><url><loc>{prod_url}about.html</loc></url></urlset>")
 
-    st.success("💎 TITAN SOVEREIGN v25.3 DEPLOYED. Zero Defects Confirmed.")
+    st.success("💎 TITAN SOVEREIGN v25.4 DEPLOYED. Zero Defects Confirmed.")
     st.download_button("📥 DOWNLOAD PLATINUM ASSET", z_b.getvalue(), f"{biz_name.lower().replace(' ', '_')}_final.zip")
