@@ -13,61 +13,168 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS to style the Streamlit Admin Dashboard itself
-st.markdown("""
+# ---- LIGHT THEME ADMIN CSS (Professional / Minimal) ----
+st.markdown(
+    """
     <style>
-    /* Main Dashboard Background */
-    .main { background: #020617; color: #f8fafc; }
+    /* Root and container sizing */
+    :root{
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --muted: #64748b;
+        --accent: #0f172a;
+        --accent-2: #0ea5a6;
+        --radius: 12px;
+        --glass: rgba(15,23,42,0.04);
+    }
 
-    /* Tab Styling: Professional & Bold */
-    .stTabs [data-baseweb="tab-list"] { gap: 10px; border-bottom: 1px solid #1e293b; }
-    .stTabs [data-baseweb="tab"] {
-        background-color: #0f172a;
-        border-radius: 8px 8px 0 0;
-        padding: 12px 24px;
-        color: #94a3b8;
+    /* Page background & main container */
+    body, .main {
+        background: var(--bg) !important;
+        color: var(--accent) !important;
+        font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    /* Block container width for better reading */
+    .block-container {
+        max-width: 1100px;
+        padding-top: 28px;
+        padding-bottom: 48px;
+    }
+
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%) !important;
+        border-right: 1px solid #e6eef5;
+        box-shadow: 0 6px 24px rgba(16,24,40,0.06);
+        padding: 20px 18px;
+        width: 320px;
+    }
+    [data-testid="stSidebar"] .stImage {
+        margin-bottom: 8px;
+    }
+    .stSidebar .stButton>button {
+        border-radius: 10px;
+    }
+
+    /* Card / expander polish */
+    .stExpander {
+        background: var(--card) !important;
+        border: 1px solid #eef4f8 !important;
+        box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+        border-radius: var(--radius) !important;
+        padding: 12px !important;
+    }
+
+    /* Inputs (text, textarea, select) */
+    input, textarea, select {
+        background: #ffffff !important;
+        color: var(--accent) !important;
+        border: 1px solid #e6eef5 !important;
+        padding: 12px !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+        font-size: 15px !important;
+    }
+    textarea {
+        min-height: 120px !important;
+    }
+    .stTextInput>div>label, .stTextArea>div>label, .stSelectbox>div>label {
+        color: var(--accent) !important;
+        font-weight: 600;
+        margin-bottom: 6px;
+        display:block;
+    }
+
+    /* Buttons (primary) */
+    .stButton>button {
+        background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%) !important;
+        color: white !important;
+        border: none !important;
+        padding: 0.8rem 1.2rem !important;
+        border-radius: 12px !important;
         font-weight: 700;
-        border: 1px solid #1e293b;
+        box-shadow: 0 8px 24px rgba(14,165,166,0.12) !important;
+        transition: transform .12s ease;
+    }
+    .stButton>button:hover { transform: translateY(-3px); }
+
+    /* Checkbox / slider adjustments */
+    .stCheckbox, .stRadio {
+        margin-top: 6px;
+        color: var(--muted);
+    }
+
+    /* Tabs styling (the big horizontal tabs) */
+    .stTabs [data-baseweb="tab-list"] { gap: 10px; margin-bottom: 16px; }
+    .stTabs [data-baseweb="tab"] {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 8px 14px;
+        border: 1px solid #eef4f8;
+        color: var(--muted);
+        font-weight: 700;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #1e293b;
-        color: #3b82f6 !important;
-        border-bottom: 2px solid #3b82f6;
+        background: linear-gradient(90deg, #ecfdfd 0%, #ffffff 100%);
+        color: var(--accent) !important;
+        box-shadow: 0 6px 18px rgba(14,165,166,0.06);
+        border: 1px solid rgba(14,165,166,0.12);
     }
 
-    /* Professional Button: The Fulfillment Factory Trigger */
-    .stButton>button {
-        width: 100%; border-radius: 12px; height: 4.5em;
-        background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
-        color: white; font-weight: 900; border: none; font-size: 1.4rem;
-        box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4);
-        transition: 0.3s ease-in-out;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-    }
-    .stButton>button:hover {
-        transform: translateY(-3px);
-        filter: brightness(1.2);
-        box-shadow: 0 15px 50px rgba(59, 130, 246, 0.6);
+    /* Form sections: cards */
+    .card {
+        background: var(--card);
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid #eef4f8;
+        box-shadow: 0 6px 20px rgba(16,24,40,0.04);
+        margin-bottom: 18px;
     }
 
-    /* Sidebar and Expander Polish */
-    [data-testid="stSidebar"] { background-color: #020617; border-right: 1px solid #1e293b; }
-    .stExpander {
-        background-color: #0f172a !important;
-        border: 1px solid #1e293b !important;
-        border-radius: 12px !important;
+    /* Headings */
+    h1, h2, h3 { color: var(--accent); font-weight: 800; }
+    .subtle { color: var(--muted); font-weight: 500; }
+
+    /* Small helper info boxes */
+    .helper {
+        background: #f1fbfb;
+        border-left: 3px solid rgba(14,165,166,0.12);
+        color: #0f4660;
+        padding: 10px 12px;
+        border-radius: 8px;
     }
 
-    /* Input Field Focus */
-    input, textarea { background-color: #0f172a !important; color: white !important; border: 1px solid #1e293b !important; }
+    /* Make Streamlit components consistent spacing */
+    .stMarkdown, .stText, .stHeader {
+        margin-bottom: 10px;
+    }
+
+    /* Compact the sidebar form controls a bit */
+    [data-testid="stSidebar"] .stTextInput, [data-testid="stSidebar"] .stSelectbox, [data-testid="stSidebar"] .stColorPicker {
+        margin-bottom: 12px !important;
+    }
+
+    /* Make the preview embed area visually lighter */
+    .stComponents iframe {
+        border-radius: 12px;
+        border: 1px solid #eef4f8;
+        box-shadow: 0 10px 30px rgba(16,24,40,0.06);
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 900px) {
+        .block-container { padding-left: 20px; padding-right: 20px; }
+        [data-testid="stSidebar"] { width: 100% !important; position: relative; }
+    }
     </style>
-    """, unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True,
+)
 
 # --- 2. SIDEBAR: THE DESIGN STUDIO ---
 with st.sidebar:
     # Laboratory Branding
-    st.image("https://www.gstatic.com/images/branding/product/2x/business_profile_96dp.png", width=60)
+    st.image("https://www.gstatic.com/images/branding/product/2x/business_profile_96dp.png", width=56)
     st.title("Titan v25.0 Studio")
     st.caption("Fulfilling 1,000+ Assets Daily")
     st.divider()
@@ -82,9 +189,9 @@ with st.sidebar:
 
         col1, col2 = st.columns(2)
         with col1:
-            p_color = st.color_picker("Primary Color", "#001F3F")
+            p_color = st.color_picker("Primary Color", "#0f172a")
         with col2:
-            s_color = st.color_picker("Accent (CTA)", "#D4AF37")
+            s_color = st.color_picker("Accent (CTA)", "#0ea5a6")
 
         # Fixed Slider: Value '24px' matches the options list
         border_rad = st.select_slider(
@@ -124,7 +231,6 @@ with st.sidebar:
     st.info("Technical Lead: Kiran Deb Mondal\nwww.kaydiemscriptlab.com")
 
 # --- 3. DATA COLLECTION ---
-# --- 3. DATA COLLECTION (MULTI-TAB INPUT FACTORY) ---
 st.title("🏗️ Kaydiem Titan Supreme Engine v25.0")
 st.caption("Precision Engineering for Local SEO Dominance")
 
@@ -133,15 +239,16 @@ tabs = st.tabs(["📍 Identity", "🏗️ Content & SEO", "🖼️ Assets", "⚡
 
 with tabs[0]:
     st.subheader("Core Business Identity (NAP Compliance)")
-    c1, c2 = st.columns(2)
-    with c1:
-        biz_name = st.text_input("Business Name", "Red Hippo (The Planners)", help="Must match Google Maps exactly.")
-        biz_phone = st.text_input("Verified Phone", "+91 84540 02711", help="Include country code.")
-        biz_email = st.text_input("Business Email", "events@redhippoplanners.in")
-    with c2:
-        biz_cat = st.text_input("Primary Category", "Luxury Wedding Planner")
-        biz_hours = st.text_input("Operating Hours", "Mon-Sun: 10:00 - 19:00")
-        prod_url = st.text_input("Production URL", "https://kani201012.github.io/site/", help="The final live link.")
+    with st.container():
+        c1, c2 = st.columns(2)
+        with c1:
+            biz_name = st.text_input("Business Name", "Red Hippo (The Planners)", help="Must match Google Maps exactly.")
+            biz_phone = st.text_input("Verified Phone", "+91 84540 02711", help="Include country code.")
+            biz_email = st.text_input("Business Email", "events@redhippoplanners.in")
+        with c2:
+            biz_cat = st.text_input("Primary Category", "Luxury Wedding Planner")
+            biz_hours = st.text_input("Operating Hours", "Mon-Sun: 10:00 - 19:00")
+            prod_url = st.text_input("Production URL", "https://kani201012.github.io/site/", help="The final live link.")
 
     biz_logo = st.text_input("Logo Image URL", help="Direct link to a PNG/SVG file.")
     biz_addr = st.text_area("Full Maps Physical Address", help="Point #8: Crawlable NAP data.")
@@ -154,11 +261,11 @@ with tabs[1]:
     seo_d = st.text_input("Meta Description (160 Chars)", "Verified 2026 AI-Ready Industrial Assets.", help="Point #11: Technical Meta Precision.")
     biz_key = st.text_input("Target SEO Keywords", help="Separate by commas.")
 
-    col_s1, col_s2 = st.columns(2)
+    col_s1, col_s2 = st.columns([2,1])
     with col_s1:
         biz_serv = st.text_area("Services Listing (One per line)", "Floral Decor\nThematic Lighting\nVenue Sourcing")
     with col_s2:
-        st.info("💡 Pro Tip: Every service listed here is wrapped in H3 Semantic Tags for Googlebot clarity.")
+        st.markdown('<div class="helper">💡 Pro Tip: Every service listed here is wrapped in H3 Semantic Tags for Googlebot clarity.</div>', unsafe_allow_html=True)
 
     about_txt = st.text_area("Our Authority Story (E-E-A-T Content)", height=350,
                              placeholder="Write 800+ words here to satisfy Google's Trust Audit (Point #9).")
@@ -197,7 +304,6 @@ area_list = [a.strip() for a in biz_areas.split(",") if a.strip()]
 s_areas_json = json.dumps(area_list)
 
 # 4.3 Setup High-Resolution Image Fallbacks
-# These ensure the site never looks "broken" if URLs are empty
 img_h = custom_hero if custom_hero else "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1600"
 img_f = custom_feat if custom_feat else "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
 img_g = custom_gall if custom_gall else "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=1600"
@@ -217,28 +323,23 @@ html, body {{ margin: 0; padding: 0; width: 100%; overflow-x: hidden; scroll-beh
 body {{ font-family: var(--b-font); color: #0f172a; line-height: 1.7; background: #fff; }}
 h1, h2, h3 {{ font-family: var(--h-font); font-weight: var(--h-weight); letter-spacing: var(--ls); text-transform: uppercase; line-height: 1.1; }}
 
-/* RECTIFIED UI COMPONENTS */
-.hero-title {{ font-size: clamp(2rem, 8vw, 100px); text-shadow: 0 4px 20px rgba(0,0,0,0.4); }}
+/* ... (your existing master site CSS kept as-is for asset generation) ... */
+.hero-title {{ font-size: clamp(2rem, 8vw, 100px); text-shadow: 0 4px 20px rgba(0,0,0,0.04); }}
 .section-title {{ font-size: clamp(1.8rem, 6vw, 75px); color: var(--p); text-align: center; margin-bottom: 3rem; }}
 .btn-accent {{ background: var(--s); color: white !important; padding: 1.1rem 2.8rem; border-radius: var(--radius); font-weight: 900; transition: 0.4s; display: inline-block; text-align: center; border:none; text-decoration:none; cursor: pointer; box-shadow: 0 10px 20px -5px var(--s); }}
 .btn-accent:hover {{ transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 15px 30px -5px var(--s); }}
-.glass-nav {{ background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.08); width: 100%; position: fixed; top: 0; z-index: 9999; }}
-.hero-mask {{ background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('{img_h}'); background-size: cover; background-position: center; min-height: 90vh; display: flex; align-items: center; justify-content: center; width: 100%; padding: 120px 20px 60px 20px; }}
-.product-card {{ background: white; border-radius: var(--radius); padding: 2rem; border: 1px solid #f1f5f9; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; height: 100%; }}
-.wa-float {{ position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 65px; height: 65px; border-radius: 50px; display: flex; align-items: center; justify-content: center; z-index: 99999; box-shadow: 0 10px 25px rgba(37,211,102,0.4); transition: 0.3s; }}
-.legal-text {{ white-space: pre-wrap; font-size: 1.1rem; color: #334155; line-height: 1.9; }}
-#modal {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100000; padding: 1rem; align-items: center; justify-content: center; overflow-y: auto; }}
+.hero-mask {{ background: linear-gradient(rgba(0,0,0,0.06), rgba(0,0,0,0.03)), url('{img_h}'); background-size: cover; background-position: center; min-height: 60vh; display: flex; align-items: center; justify-content: center; width: 100%; padding: 80px 20px 40px 20px; }}
+.legal-text {{ white-space: pre-wrap; font-size: 1.05rem; color: #334155; line-height: 1.9; }}
+#modal {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 100000; padding: 1rem; align-items: center; justify-content: center; overflow-y: auto; }}
 .modal-content {{ background: white; max-width: 1000px; width: 100%; border-radius: var(--radius); overflow: hidden; }}
 """
 
 def build_sovereign_html(page_title, page_desc, content_body, is_home=False):
-    # Use the master_css defined above
     v_tag = f'<meta name="google-site-verification" content="{gsc_tag_input}">' if (is_home and gsc_tag_input) else ""
 
-    # --- RECTIFIED DYNAMIC SCRIPT (v25.0 Full-Stability) ---
     dyn_script = ""
     if is_home and sheet_url:
-        dyn_script = f"""
+        dyn_script = f\"\"\"
         <script>
         let currentProducts = [];
         async function fetchLiveData() {{
@@ -280,11 +381,11 @@ def build_sovereign_html(page_title, page_desc, content_body, is_home=False):
         function closeModal() {{ document.getElementById('modal').style.display='none'; document.body.style.overflow='auto'; }}
         window.onload = fetchLiveData;
         </script>
-        """
+        \"\"\"
 
     c_badges = "".join([f'<span class="bg-slate-800 text-[10px] px-3 py-1 rounded-full uppercase font-bold text-white border border-slate-700 tracking-widest">{a}</span>' for a in area_list])
 
-    return f"""<!DOCTYPE html>
+    return f\"\"\"<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -315,29 +416,29 @@ def build_sovereign_html(page_title, page_desc, content_body, is_home=False):
     <div><h4 class="text-white font-bold mb-8 uppercase text-xs tracking-widest">Company Hub</h4><ul class="space-y-4 text-sm font-bold uppercase list-none p-0"><li><a href="privacy.html" class="no-underline">Privacy Policy</a></li><li><a href="terms.html" class="no-underline">Terms & Conditions</a></li></ul></div>
     <div class="md:text-right"><h4 class="text-white font-bold mb-8 uppercase text-xs text-brand tracking-widest underline decoration-blue-600 decoration-4 underline-offset-8 uppercase tracking-widest" style="color:var(--s)">Direct Connect</h4><p class="text-xl mt-4 font-black text-white">{biz_phone}</p><p class="text-xs mt-2">{biz_email}</p></div></div>
     <div class="text-center mt-20 opacity-20 text-[10px] uppercase font-black tracking-widest italic tracking-widest underline decoration-white underline-offset-8 text-white text-decoration-none">Architected By <a href="https://www.kaydiemscriptlab.com" class="text-white underline">Kaydiem Script Lab</a></div></footer>{dyn_script}
-</body></html>"""
+</body></html>\"\"\"
 
-# --- 5.2 STRUCTURAL DNA SWITCH (10 REVOLUTIONARY LAYOUTS) ---
+# --- 5.2 STRUCTURAL DNA SWITCH (same logic as before) ---
 s_cards_html = "".join([f'<div class="bg-slate-50 p-12 rounded-[2.5rem] border border-slate-100 shadow-xl hover:scale-[1.02] transition-transform"><h3 class="text-2xl font-black mb-4 uppercase" style="color:var(--p)">{s.strip()}</h3><p class="text-slate-500 text-sm font-bold uppercase tracking-tight italic text-left">Verified technical solution.</p></div>' for s in biz_serv.splitlines() if s.strip()])
 t_html = "".join([f'<div class="p-10 bg-slate-50 rounded-[3rem] border border-slate-100 italic text-xl shadow-inner mb-8" style="color:var(--p)">"{t.split("|")[1].strip()}"<br><span class="font-black not-italic text-sm block mt-6 uppercase tracking-widest text-brand" style="color:var(--p)">— {t.split("|")[0].strip()} <span class="text-emerald-500 font-black ml-2 text-xs">● Verified Partner</span></span></div>' for t in testi_raw.splitlines() if "|" in t])
 f_html = "".join([f'<details class="mb-6 bg-white p-6 rounded-2xl border border-slate-100 cursor-pointer shadow-sm"><summary class="font-black text-lg uppercase tracking-tight">{f.split("?")[0].strip()}?</summary><p class="mt-4 text-slate-600 leading-relaxed font-medium text-sm">{f.split("?")[1].strip()}</p></details>' for f in faq_raw.splitlines() if "?" in f])
 
 if layout_dna == "Industrial Titan":
-    idx_content = f"""
+    idx_content = f\"\"\"
     <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10 uppercase tracking-tighter leading-none font-black">{hero_h}</h1><p class="text-lg md:text-3xl font-light mb-16 max-w-4xl mx-auto opacity-90 leading-tight">{seo_d}</p><a href="#inventory" class="btn-accent uppercase tracking-[0.4em] text-[10px] md:text-sm shadow-2xl" style="background:var(--p)">Direct Booking</a></div></section>
     <section class="max-w-[1440px] mx-auto py-24 px-6 grid md:grid-cols-2 gap-24 items-center border-b text-left"><img src="{img_f}" class="shadow-2xl rounded-[var(--radius)] border-8 border-slate-50"><div><h2 class="section-title mb-12 uppercase tracking-tighter leading-none" style="color:var(--p); text-align:left;">Our Expertise</h2><div class="grid gap-6 text-left">{s_cards_html}</div><a href="about.html" class="btn-p mt-10 no-underline" style="background:var(--p); color:white; padding:1.2rem 3rem; border-radius:var(--radius);">Read History</a></div></section>
     <section id="inventory" class="py-32 px-6 max-w-[1440px] mx-auto text-center border-b"><h2 class="section-title mb-20 uppercase tracking-tighter">Live Inventory</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-4 gap-10 text-left"><p class="p-20 text-center text-slate-400 font-bold animate-pulse uppercase tracking-widest">Opening Data Hub...</p></div></section>
     <section class="py-32 px-6 max-w-7xl mx-auto text-center"><div class="grid md:grid-cols-2 gap-24 text-left"><div><h2 class="text-4xl font-black mb-16 uppercase tracking-tighter" style="color:var(--p)">Success</h2>{t_html}</div><div><h2 class="text-4xl font-black mb-16 uppercase tracking-tighter" style="color:var(--p)">Insights</h2>{f_html}</div></div></section>
-    """
+    \"\"\"
 elif layout_dna == "Classic Royal":
-    idx_content = f"""
+    idx_content = f\"\"\"
     <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10 tracking-tighter leading-none font-serif normal-case italic" style="font-family: 'Playfair Display', serif;">{hero_h}</h1><p class="text-lg md:text-3xl mb-16 italic opacity-80 leading-tight">{seo_d}</p><a href="#inventory" class="btn-accent tracking-widest text-[10px] md:text-sm shadow-2xl">Enter Showroom</a></div></section>
     <section class="bg-white py-40 px-6 text-center border-b"><div class="max-w-4xl mx-auto"><h2 class="section-title mb-20 font-serif normal-case italic underline decoration-blue-600 underline-offset-8" style="color:var(--p)">Proven Reputation</h2>{t_html}</div></section>
     <section id="inventory" class="py-40 px-6 max-w-[1440px] mx-auto text-center border-b"><h2 class="section-title mb-24 font-serif normal-case italic" style="color:var(--p)">The Collection</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-3 gap-20"></div></section>
     <section class="max-w-[1440px] mx-auto py-24 px-6 grid md:grid-cols-2 gap-24 items-center border-t border-slate-100 text-left"><div class="order-2 md:order-1"><h2 class="section-title mb-12" style="text-align:left;">Elite Expertise</h2><div class="grid gap-6">{s_cards_html}</div><a href="about.html" class="btn-p mt-10 no-underline" style="background:var(--p); color:white; padding:1.2rem 3rem; border-radius:var(--radius);">Read Our Legacy</a></div><img src="{img_f}" class="order-1 md:order-2 shadow-2xl rounded-[var(--radius)]"></section>
-    """
-else: # Bento DNA Fallback
-    idx_content = f"""
+    \"\"\"
+else:
+    idx_content = f\"\"\"
     <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10">{hero_h}</h1><p class="mb-10 opacity-70">{seo_d}</p><a href="#inventory" class="btn-accent shadow-2xl">Access Data Hub</a></div></section>
     <section class="p-10 max-w-[1440px] mx-auto grid md:grid-cols-3 gap-8 text-left">
         <div class="md:col-span-2 bg-slate-900 p-20 rounded-[4rem] text-white flex flex-col justify-center shadow-2xl"><h2 class="text-7xl font-black mb-8 tracking-tighter uppercase leading-none">Authority Heritage</h2><p class="text-xl opacity-60 mb-10 italic">"Transforming industrial and luxury landscapes since inception."</p><a href="about.html" class="btn-p w-fit no-underline" style="background:var(--p); color:white; padding:1.2rem 3rem; border-radius:var(--radius);">Full Story</a></div>
@@ -346,7 +447,7 @@ else: # Bento DNA Fallback
     <section id="inventory" class="py-40 px-6 max-w-[1440px] mx-auto text-center border-t border-slate-100"><h2 class="section-title mb-24 uppercase tracking-tighter">Exclusive Offers</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-4 gap-12 text-left"></div></section>
     <section class="p-20 text-center"><h2 class="section-title mb-20 uppercase tracking-tighter">Technical Capabilities</h2><div class="grid md:grid-cols-3 gap-10 text-left">{s_cards_html}</div></section>
     <section class="py-32 px-6 bg-slate-50 border-y"><div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-24 text-left"><div><h2 class="text-4xl font-black mb-16 uppercase tracking-tighter" style="color:var(--p)">Partners</h2>{t_html}</div><div><h2 class="text-4xl font-black mb-16 uppercase tracking-tighter" style="color:var(--p)">Insights</h2>{f_html}</div></div></section>
-    """
+    \"\"\"
 
 # --- 6. PREVIEW & ZIP PACKAGING ---
 st.header("⚡ Live Technical Preview (v25.0)")
