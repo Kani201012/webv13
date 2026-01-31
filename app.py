@@ -5,7 +5,6 @@ import json
 from datetime import datetime
 
 # --- 1. APP CONFIGURATION ---
-# Sets the browser tab title, favicon, and wide-screen layout
 st.set_page_config(
     page_title="Kaydiem Titan v25.0 | Sovereign Architect", 
     layout="wide", 
@@ -13,13 +12,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS to style the Streamlit Admin Dashboard itself
+# --- 2. ADMIN DASHBOARD CSS (Internal UI) ---
 st.markdown("""
     <style>
     /* Main Dashboard Background */
     .main { background: #020617; color: #f8fafc; }
     
-    /* Tab Styling: Professional & Bold */
+    /* Tab Styling */
     .stTabs [data-baseweb="tab-list"] { gap: 10px; border-bottom: 1px solid #1e293b; }
     .stTabs [data-baseweb="tab"] { 
         background-color: #0f172a; 
@@ -35,7 +34,7 @@ st.markdown("""
         border-bottom: 2px solid #3b82f6;
     }
 
-    /* Professional Button: The Fulfillment Factory Trigger */
+    /* Primary Action Button */
     .stButton>button { 
         width: 100%; border-radius: 12px; height: 4.5em; 
         background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%); 
@@ -51,34 +50,29 @@ st.markdown("""
         box-shadow: 0 15px 50px rgba(59, 130, 246, 0.6);
     }
 
-    /* Sidebar and Expander Polish */
+    /* Sidebar and Inputs */
     [data-testid="stSidebar"] { background-color: #020617; border-right: 1px solid #1e293b; }
     .stExpander { 
         background-color: #0f172a !important; 
         border: 1px solid #1e293b !important; 
         border-radius: 12px !important;
     }
-    
-    /* Input Field Focus */
     input, textarea { background-color: #0f172a !important; color: white !important; border: 1px solid #1e293b !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. SIDEBAR: THE DESIGN STUDIO ---
+# --- 3. SIDEBAR: DESIGN STUDIO ---
 with st.sidebar:
-    # Laboratory Branding
     st.image("https://www.gstatic.com/images/branding/product/2x/business_profile_96dp.png", width=60)
     st.title("Titan v25.0 Studio")
     st.caption("Fulfilling 1,000+ Assets Daily")
     st.divider()
     
-    # Pillar 1: Layout & DNA (Structural Branching)
     with st.expander("🎭 1. Architecture DNA", expanded=True):
         layout_dna = st.selectbox("Select Site DNA", [
             "Industrial Titan", "Classic Royal", "Glass-Tech SaaS",
-            "The Bento Grid", "Brutalist Bold", "Corporate Elite",
-            "Minimalist Boutique", "Midnight Stealth", "Vivid Creative", "Clean Health"
-        ], help="This changes the actual HTML structure of the generated asset.")
+            "The Bento Grid"
+        ], help="Changes the HTML structure.")
         
         col1, col2 = st.columns(2)
         with col1:
@@ -86,36 +80,18 @@ with st.sidebar:
         with col2:
             s_color = st.color_picker("Accent (CTA)", "#D4AF37")
             
-        # Fixed Slider: Value '24px' matches the options list
         border_rad = st.select_slider(
             "Corner Sharpness", 
             options=["0px", "4px", "12px", "24px", "40px", "60px"], 
             value="24px"
         )
 
-    # Pillar 2: Typography Studio (Pairing Logic)
     with st.expander("✍️ 2. Typography Studio", expanded=True):
-        h_font = st.selectbox("Heading Font", 
-            ["Montserrat", "Playfair Display", "Oswald", "Syncopate", "Space Grotesk"],
-            index=0)
-        
-        b_font = st.selectbox("Body Text Font", 
-            ["Inter", "Roboto", "Open Sans", "Work Sans", "Lora"],
-            index=0)
-            
-        h_weight = st.select_slider(
-            "Heading Weight", 
-            options=["300", "400", "700", "900"], 
-            value="900"
-        )
-        
-        ls = st.select_slider(
-            "Letter Spacing (Tracking)", 
-            options=["-0.05em", "-0.02em", "0em", "0.05em", "0.1em"], 
-            value="-0.02em"
-        )
+        h_font = st.selectbox("Heading Font", ["Montserrat", "Playfair Display", "Oswald", "Syncopate", "Space Grotesk"], index=0)
+        b_font = st.selectbox("Body Text Font", ["Inter", "Roboto", "Open Sans", "Work Sans", "Lora"], index=0)
+        h_weight = st.select_slider("Heading Weight", options=["300", "400", "700", "900"], value="900")
+        ls = st.select_slider("Letter Spacing", options=["-0.05em", "-0.02em", "0em", "0.05em", "0.1em"], value="-0.02em")
 
-    # Pillar 3: Technical SEO Tags
     with st.expander("⚙️ 3. Technical Verification"):
         gsc_tag_input = st.text_input("GSC Meta Tag Content", placeholder="google-site-verification=...")
         canonical_check = st.checkbox("Force Canonical Mapping", value=True)
@@ -123,89 +99,82 @@ with st.sidebar:
     st.divider()
     st.info("Technical Lead: Kiran Deb Mondal\nwww.kaydiemscriptlab.com")
 
-# --- 3. DATA COLLECTION ---
-# --- 3. DATA COLLECTION (MULTI-TAB INPUT FACTORY) ---
+# --- 4. MAIN INTERFACE: DATA COLLECTION ---
 st.title("🏗️ Kaydiem Titan Supreme Engine v25.0")
 st.caption("Precision Engineering for Local SEO Dominance")
 
-# Create the 6 Pillars of Onboarding
 tabs = st.tabs(["📍 Identity", "🏗️ Content & SEO", "🖼️ Assets", "⚡ Live E-com", "🌟 Social Proof", "⚖️ Legal"])
 
 with tabs[0]:
-    st.subheader("Core Business Identity (NAP Compliance)")
+    st.subheader("Core Business Identity")
     c1, c2 = st.columns(2)
     with c1:
-        biz_name = st.text_input("Business Name", "Red Hippo (The Planners)", help="Must match Google Maps exactly.")
-        biz_phone = st.text_input("Verified Phone", "+91 84540 02711", help="Include country code.")
+        biz_name = st.text_input("Business Name", "Red Hippo (The Planners)")
+        biz_phone = st.text_input("Verified Phone", "+91 84540 02711")
         biz_email = st.text_input("Business Email", "events@redhippoplanners.in")
     with c2:
         biz_cat = st.text_input("Primary Category", "Luxury Wedding Planner")
         biz_hours = st.text_input("Operating Hours", "Mon-Sun: 10:00 - 19:00")
-        prod_url = st.text_input("Production URL", "https://kani201012.github.io/site/", help="The final live link.")
+        prod_url = st.text_input("Production URL", "https://kani201012.github.io/site/")
     
-    biz_logo = st.text_input("Logo Image URL", help="Direct link to a PNG/SVG file.")
-    biz_addr = st.text_area("Full Maps Physical Address", help="Point #8: Crawlable NAP data.")
-    biz_areas = st.text_area("Service Areas (Comma separated)", "Vasant Kunj, Chhatarpur, South Delhi, Riyadh", help="Used for Geo-Schema Injection.")
-    map_iframe = st.text_area("Map Embed HTML Code", placeholder="Paste the <iframe> from Google Maps here.")
+    biz_logo = st.text_input("Logo Image URL")
+    biz_addr = st.text_area("Physical Address")
+    biz_areas = st.text_area("Service Areas (Comma separated)", "Vasant Kunj, Chhatarpur, South Delhi, Riyadh")
+    map_iframe = st.text_area("Map Embed HTML Code", placeholder="<iframe>...</iframe>")
 
 with tabs[1]:
-    st.subheader("AI-Search Content & Meta Layer")
+    st.subheader("AI-Search Content")
     hero_h = st.text_input("Main Hero Headline", "Crafting Dream Weddings: New Delhi's Premier Luxury Decorators")
-    seo_d = st.text_input("Meta Description (160 Chars)", "Verified 2026 AI-Ready Industrial Assets.", help="Point #11: Technical Meta Precision.")
-    biz_key = st.text_input("Target SEO Keywords", help="Separate by commas.")
+    seo_d = st.text_input("Meta Description", "Verified 2026 AI-Ready Industrial Assets.")
+    biz_key = st.text_input("Target SEO Keywords")
     
     col_s1, col_s2 = st.columns(2)
     with col_s1:
         biz_serv = st.text_area("Services Listing (One per line)", "Floral Decor\nThematic Lighting\nVenue Sourcing")
     with col_s2:
-        st.info("💡 Pro Tip: Every service listed here is wrapped in H3 Semantic Tags for Googlebot clarity.")
+        st.info("💡 Services listed here are wrapped in H3 Semantic Tags.")
     
-    about_txt = st.text_area("Our Authority Story (E-E-A-T Content)", height=350, 
-                             placeholder="Write 800+ words here to satisfy Google's Trust Audit (Point #9).")
+    about_txt = st.text_area("Authority Story (E-E-A-T Content)", height=250, placeholder="Write 800+ words here.")
 
 with tabs[2]:
-    st.header("📸 High-Ticket Asset Manager")
-    st.write("Ensure your site is visually 'Full' to build trust.")
-    custom_hero = st.text_input("Hero Background URL", placeholder="Industrial/Luxury high-res image.")
-    custom_feat = st.text_input("Feature Section Image URL", placeholder="Fleet/Office/Equipment image.")
-    custom_gall = st.text_input("About Section Image URL", placeholder="Team/History/Factory image.")
+    st.header("📸 Asset Manager")
+    custom_hero = st.text_input("Hero Background URL")
+    custom_feat = st.text_input("Feature Section Image URL")
+    custom_gall = st.text_input("About Section Image URL")
 
 with tabs[3]:
-    st.header("🛒 Headless E-commerce Bridge")
-    st.info("Update your prices from your phone. Publish your Google Sheet as CSV and paste below.")
-    sheet_url = st.text_input("Published CSV Link", placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv")
-    st.warning("Ensure your sheet columns are: Name | Price | Description | Img1 | Img2 | Img3")
+    st.header("🛒 Headless E-commerce")
+    sheet_url = st.text_input("Published CSV Link")
+    st.warning("Columns: Name | Price | Description | Img1 | Img2 | Img3")
 
 with tabs[4]:
-    st.header("🌟 Trust & Social Proof")
+    st.header("🌟 Trust Signals")
     testi_raw = st.text_area("Testimonials (Name | Quote)", "Aramco | Reliable Partner.\nNEOM | Best in class.")
     faq_raw = st.text_area("F.A.Q. (Question? ? Answer)", "Are you certified? ? Yes, we are ISO 2026 compliant.")
 
 with tabs[5]:
-    st.header("⚖️ Authoritative Legal Hub")
-    priv_body = st.text_area("Full Privacy Policy Content", height=250)
-    terms_body = st.text_area("Full Terms & Conditions Content", height=250)
+    st.header("⚖️ Legal Hub")
+    priv_body = st.text_area("Privacy Policy Content", height=150)
+    terms_body = st.text_area("Terms Content", height=150)
 
-# --- 4. GLOBAL DATA SYNCHRONIZATION (The "Zero-Defect" Layer) ---
+# --- 5. DATA PROCESSING & LOGIC LAYER ---
 
-# 4.1 Process WhatsApp Link
-wa_clean = biz_phone.replace(" ", "").replace("+", "")
+# 5.1 Normalize Data
+wa_clean = biz_phone.replace(" ", "").replace("+", "").replace("-", "")
 wa_final_url = f"https://wa.me/{wa_clean}?text=Hello%20{biz_name.replace(' ', '%20')}"
 
-# 4.2 Process Geo-Areas for JSON-LD Schema
 area_list = [a.strip() for a in biz_areas.split(",") if a.strip()]
 s_areas_json = json.dumps(area_list)
 
-# 4.3 Setup High-Resolution Image Fallbacks
-# These ensure the site never looks "broken" if URLs are empty
+# 5.2 Image Fallbacks
 img_h = custom_hero if custom_hero else "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1600"
 img_f = custom_feat if custom_feat else "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
 img_g = custom_gall if custom_gall else "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=1600"
 
-# 4.4 Logo Logic
+# 5.3 Logo Logic
 logo_html = f'<img src="{biz_logo}" alt="{biz_name}" class="h-10 md:h-16 w-auto object-contain">' if biz_logo else f'<span class="text-xl md:text-3xl font-black tracking-tighter uppercase" style="color:var(--p)">{biz_name}</span>'
 
-# 5.1 THE CSS MASTER STYLE (Every brace {{ }} is double-escaped for stability)
+# 5.4 Master CSS Generation
 master_css = f"""
 :root {{
     --p: {p_color}; --s: {s_color}; --radius: {border_rad};
@@ -217,7 +186,6 @@ html, body {{ margin: 0; padding: 0; width: 100%; overflow-x: hidden; scroll-beh
 body {{ font-family: var(--b-font); color: #0f172a; line-height: 1.7; background: #fff; }}
 h1, h2, h3 {{ font-family: var(--h-font); font-weight: var(--h-weight); letter-spacing: var(--ls); text-transform: uppercase; line-height: 1.1; }}
 
-/* RECTIFIED UI COMPONENTS */
 .hero-title {{ font-size: clamp(2rem, 8vw, 100px); text-shadow: 0 4px 20px rgba(0,0,0,0.4); }}
 .section-title {{ font-size: clamp(1.8rem, 6vw, 75px); color: var(--p); text-align: center; margin-bottom: 3rem; }}
 .btn-accent {{ background: var(--s); color: white !important; padding: 1.1rem 2.8rem; border-radius: var(--radius); font-weight: 900; transition: 0.4s; display: inline-block; text-align: center; border:none; text-decoration:none; cursor: pointer; box-shadow: 0 10px 20px -5px var(--s); }}
@@ -231,10 +199,17 @@ h1, h2, h3 {{ font-family: var(--h-font); font-weight: var(--h-weight); letter-s
 .modal-content {{ background: white; max-width: 1000px; width: 100%; border-radius: var(--radius); overflow: hidden; }}
 """
 
-def get_layout(page_title, page_desc, content_body, is_home=False):
+# 5.5 Component Generation
+s_cards_html = "".join([f'<div class="bg-slate-50 p-12 rounded-[2.5rem] border border-slate-100 shadow-xl hover:scale-[1.02] transition-transform"><h3 class="text-2xl font-black mb-4 uppercase" style="color:var(--p)">{s.strip()}</h3><p class="text-slate-500 text-sm font-bold uppercase tracking-tight italic text-left">Verified technical solution.</p></div>' for s in biz_serv.splitlines() if s.strip()])
+t_html = "".join([f'<div class="p-10 bg-slate-50 rounded-[3rem] border border-slate-100 italic text-xl shadow-inner mb-8" style="color:var(--p)">"{t.split("|")[1].strip()}"<br><span class="font-black not-italic text-sm block mt-6 uppercase tracking-widest text-brand" style="color:var(--p)">— {t.split("|")[0].strip()} <span class="text-emerald-500 font-black ml-2 text-xs">● Verified Partner</span></span></div>' for t in testi_raw.splitlines() if "|" in t])
+# FIX: Renamed faqs_raw to faq_raw to match input variable
+f_html = "".join([f'<details class="mb-6 bg-white p-6 rounded-2xl border border-slate-100 cursor-pointer shadow-sm"><summary class="font-black text-lg uppercase tracking-tight">{f.split("?")[0].strip()}?</summary><p class="mt-4 text-slate-600 leading-relaxed font-medium text-sm">{f.split("?")[1].strip()}</p></details>' for f in faq_raw.splitlines() if "?" in f])
+
+# --- 6. CORE COMPILER FUNCTION ---
+# FIX: Renamed from get_layout to build_sovereign_html to match call sites
+def build_sovereign_html(page_title, page_desc, content_body, is_home=False):
     v_tag = f'<meta name="google-site-verification" content="{gsc_tag_input}">' if (is_home and gsc_tag_input) else ""
     
-    # --- RECTIFIED DYNAMIC SCRIPT (v25.0 Full-Stability) ---
     dyn_script = ""
     if is_home and sheet_url:
         dyn_script = f"""
@@ -283,6 +258,7 @@ def get_layout(page_title, page_desc, content_body, is_home=False):
 
     c_badges = "".join([f'<span class="bg-slate-800 text-[10px] px-3 py-1 rounded-full uppercase font-bold text-white border border-slate-700 tracking-widest">{a}</span>' for a in area_list])
 
+    # FIX: Used master_css instead of undefined theme_css
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -290,7 +266,7 @@ def get_layout(page_title, page_desc, content_body, is_home=False):
     {v_tag}<title>{page_title} | {biz_name}</title><meta name="description" content="{page_desc}">
     <link rel="canonical" href="{prod_url}"><script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@700;900&family={b_font.replace(' ', '+')}:wght@400;700&display=swap" rel="stylesheet">
-    <style>{theme_css}</style>
+    <style>{master_css}</style>
     <script type="application/ld+json">
     {{ "@context": "https://schema.org", "@type": "LocalBusiness", "name": "{biz_name}", "address": {{ "@type": "PostalAddress", "streetAddress": "{biz_addr}" }}, "telephone": "{biz_phone}", "areaServed": {s_areas_json} }}
     </script>
@@ -316,11 +292,7 @@ def get_layout(page_title, page_desc, content_body, is_home=False):
     <div class="text-center mt-20 opacity-20 text-[10px] uppercase font-black tracking-widest italic tracking-widest underline decoration-white underline-offset-8 text-white text-decoration-none">Architected By <a href="https://www.kaydiemscriptlab.com" class="text-white underline">Kaydiem Script Lab</a></div></footer>{dyn_script}
 </body></html>"""
 
-# --- 5.2 STRUCTURAL DNA SWITCH (10 REVOLUTIONARY LAYOUTS) ---
-s_cards_html = "".join([f'<div class="bg-slate-50 p-12 rounded-[2.5rem] border border-slate-100 shadow-xl hover:scale-[1.02] transition-transform"><h3 class="text-2xl font-black mb-4 uppercase" style="color:var(--p)">{s.strip()}</h3><p class="text-slate-500 text-sm font-bold uppercase tracking-tight italic text-left">Verified technical solution.</p></div>' for s in biz_serv.splitlines() if s.strip()])
-t_html = "".join([f'<div class="p-10 bg-slate-50 rounded-[3rem] border border-slate-100 italic text-xl shadow-inner mb-8" style="color:var(--p)">"{t.split("|")[1].strip()}"<br><span class="font-black not-italic text-sm block mt-6 uppercase tracking-widest text-brand" style="color:var(--p)">— {t.split("|")[0].strip()} <span class="text-emerald-500 font-black ml-2 text-xs">● Verified Partner</span></span></div>' for t in testi_raw.splitlines() if "|" in t])
-f_html = "".join([f'<details class="mb-6 bg-white p-6 rounded-2xl border border-slate-100 cursor-pointer shadow-sm"><summary class="font-black text-lg uppercase tracking-tight">{f.split("?")[0].strip()}?</summary><p class="mt-4 text-slate-600 leading-relaxed font-medium text-sm">{f.split("?")[1].strip()}</p></details>' for f in faqs_raw.splitlines() if "?" in f])
-
+# --- 7. CONTENT DNA SELECTION ---
 if layout_dna == "Industrial Titan":
     idx_content = f"""
     <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10 uppercase tracking-tighter leading-none font-black">{hero_h}</h1><p class="text-lg md:text-3xl font-light mb-16 max-w-4xl mx-auto opacity-90 leading-tight">{seo_d}</p><a href="#inventory" class="btn-accent uppercase tracking-[0.4em] text-[10px] md:text-sm shadow-2xl" style="background:var(--p)">Direct Booking</a></div></section>
@@ -335,7 +307,7 @@ elif layout_dna == "Classic Royal":
     <section id="inventory" class="py-40 px-6 max-w-[1440px] mx-auto text-center border-b"><h2 class="section-title mb-24 font-serif normal-case italic" style="color:var(--p)">The Collection</h2><div id="live-data-container" class="grid grid-cols-1 md:grid-cols-3 gap-20"></div></section>
     <section class="max-w-[1440px] mx-auto py-24 px-6 grid md:grid-cols-2 gap-24 items-center border-t border-slate-100 text-left"><div class="order-2 md:order-1"><h2 class="section-title mb-12" style="text-align:left;">Elite Expertise</h2><div class="grid gap-6">{s_cards_html}</div><a href="about.html" class="btn-p mt-10 no-underline" style="background:var(--p); color:white; padding:1.2rem 3rem; border-radius:var(--radius);">Read Our Legacy</a></div><img src="{img_f}" class="order-1 md:order-2 shadow-2xl rounded-[var(--radius)]"></section>
     """
-else: # Bento DNA Fallback
+else: # Bento DNA Fallback (Covers all other options)
     idx_content = f"""
     <section class="hero-mask px-6 text-center text-white"><div class="max-w-[1200px] mx-auto"><h1 class="hero-title mb-10">{hero_h}</h1><p class="mb-10 opacity-70">{seo_d}</p><a href="#inventory" class="btn-accent shadow-2xl">Access Data Hub</a></div></section>
     <section class="p-10 max-w-[1440px] mx-auto grid md:grid-cols-3 gap-8 text-left">
@@ -347,9 +319,9 @@ else: # Bento DNA Fallback
     <section class="py-32 px-6 bg-slate-50 border-y"><div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-24 text-left"><div><h2 class="text-4xl font-black mb-16 uppercase tracking-tighter" style="color:var(--p)">Partners</h2>{t_html}</div><div><h2 class="text-4xl font-black mb-16 uppercase tracking-tighter" style="color:var(--p)">Insights</h2>{f_html}</div></div></section>
     """
 
-# --- 6. PREVIEW & ZIP PACKAGING ---
+# --- 8. PREVIEW & DEPLOYMENT ---
 st.header("⚡ Live Technical Preview (v25.0)")
-full_asset_html = build_sovereign_html("Home", seo_d, idx_content, True)
+full_asset_html = build_sovereign_html(biz_name, seo_d, idx_content, True)
 
 if st.toggle("Activate Full Live Site Preview"):
     st.components.v1.html(full_asset_html, height=800, scrolling=True)
