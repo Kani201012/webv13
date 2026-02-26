@@ -794,7 +794,8 @@ def gen_inventory():
 
 def gen_about_section():
     if not show_gallery: return ""
-    return f'<section id="about"><div class="container"><div class="about-grid"><div class="reveal"><h2 id="about-title">{about_h_in}</h2><div>{format_text(about_short_in)}</div><a href="about.html" class="btn btn-primary" style="margin-top:1rem;">Read More</a></div><img src="{about_img}" class="reveal" style="width:100%; border-radius:var(--radius);" loading="lazy" alt="About Us"></div></div></section>'
+    # Added width="600" height="400" to satisfy Google metrics
+    return f'<section id="about"><div class="container"><div class="about-grid"><div class="reveal"><h2 id="about-title">{about_h_in}</h2><div>{format_text(about_short_in)}</div><a href="about.html" class="btn btn-primary" style="margin-top:1rem;">Read More</a></div><img src="{about_img}" class="reveal" style="width:100%; border-radius:var(--radius); height:auto;" width="600" height="400" loading="lazy" alt="About Us"></div></div></section>'
 
 def gen_faq_section():
     if not show_faq: return ""
