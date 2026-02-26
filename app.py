@@ -820,15 +820,12 @@ def gen_scripts():
     return "<script defer>window.addEventListener('scroll', () => { var r = document.querySelectorAll('.reveal'); for (var i = 0; i < r.length; i++) { if (r[i].getBoundingClientRect().top < window.innerHeight - 100) r[i].classList.add('active'); } }); window.dispatchEvent(new Event('scroll'));</script>"
 
 def build_page(title, content, extra_js=""):
-    # This line captures the ID from your sidebar
     gsc_meta = f'<meta name="google-site-verification" content="{gsc_tag}">' if gsc_tag else ""
     
     og_meta = f'<meta property="og:title" content="{title} | {biz_name}"><meta property="og:description" content="{seo_d}"><meta property="og:image" content="{og_image or logo_url}"><meta name="twitter:card" content="summary_large_image">'
     pwa_tags = f'<link rel="manifest" href="manifest.json"><meta name="theme-color" content="{p_color}"><link rel="apple-touch-icon" href="{pwa_icon}">'
     sw_script = "<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('service-worker.js'); }</script>"
-
-    # We added <link rel="preload"> for the fonts, and added &display=swap
-    # We also ensured all JS in the <head> uses 'defer'
+    
     ga_script_opt = f"<script async src='https://www.googletagmanager.com/gtag/js?id={ga_tag}'></script><script>window.dataLayer = window.dataLayer ||[]; function gtag(){{dataLayer.push(arguments);}} gtag('js', new Date()); gtag('config', '{ga_tag}');</script>" if ga_tag else ""
 
     return f"""<!DOCTYPE html>
@@ -840,7 +837,9 @@ def build_page(title, content, extra_js=""):
     <meta name="description" content="{seo_d}">
     {gsc_meta}{og_meta}{pwa_tags}{gen_schema()}
     
-    <!-- Preload critical fonts to stop render blocking -->
+    <!-- LCP FIX: Preload the absolute biggest image instantly -->
+    <link rel="preload" as="image" href="{hero_img_1}">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family={h_font.replace(' ', '+')}:wght@400;700;900&family={b_font.replace(' ', '+')}:wght@300;400;600&display=swap">
@@ -849,7 +848,6 @@ def build_page(title, content, extra_js=""):
     
     <style>{get_theme_css()}</style>
     
-    <!-- Deferred Scripts (Will not block rendering) -->
     {ga_script_opt}
     {gen_2050_scripts()}
 </head>
