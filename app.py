@@ -640,7 +640,15 @@ def gen_csv_parser():
         } 
         res.push(cur.trim()); return res; 
     } 
-    function parseMarkdown(text) { return text ? text.replace(/\\r\\n/g, '\\n').replace(/\\n/g, '<br>').replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>') : ''; }
+    
+    function parseMarkdown(text) { 
+        if (!text) return '';
+        return text
+            .replace(/\\r\\n/g, '<br>') // Converts Excel line breaks
+            .replace(/\\n/g, '<br>')    // Converts standard line breaks
+            .replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>') // Bold: **text**
+            .replace(/^\\* (.*$)/gim, '<li style="margin-left:20px; list-style-type: disc; margin-bottom:5px;">$1</li>'); // Bullets: * text
+    }
     </script>
     """
 
