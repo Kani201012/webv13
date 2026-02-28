@@ -643,24 +643,23 @@ def gen_csv_parser():
     
     function parseMarkdown(text) { 
         if (!text) return '';
+        // Fix the literal \\n string by splitting and joining with <br>
+        let clean = text.split('\\\\n').join('<br>').split('\\n').join('<br>');
         
-        // 1. Clean up literal "\n" text that Google Sheets sometimes creates
-        let cleanText = text.replace(/\\\\n/g, '<br>').replace(/\\n/g, '<br>');
-
-        // 2. Handle Bold (**text**)
-        let parts = cleanText.split('**');
+        // Handle Bold
+        let parts = clean.split('**');
         for (let i = 1; i < parts.length; i += 2) {
             parts[i] = '<strong>' + parts[i] + '</strong>';
         }
-        let boldText = parts.join('');
+        let bolded = parts.join('');
         
-        // 3. Handle Bullets (* text)
-        return boldText.split('<br>').map(line => {
-            let trimmed = line.trim();
-            if (trimmed.startsWith('* ')) {
-                return `<li style="margin-left:20px; list-style-type:disc; margin-bottom:8px; display:list-item;">${trimmed.substring(2)}</li>`;
+        // Handle Bullets and Paragraphs
+        return bolded.split('<br>').map(line => {
+            let t = line.trim();
+            if (t.startsWith('* ')) {
+                return '<li style="margin-left:20px; list-style-type:disc; margin-bottom:8px;">' + t.substring(2) + '</li>';
             }
-            return trimmed ? `<p style="margin-bottom:15px;">${trimmed}</p>` : '';
+            return t ? '<p style="margin-bottom:15px;">' + t + '</p>' : '';
         }).join('');
     }
     </script>
@@ -955,10 +954,10 @@ def gen_blog_index_html():
 def gen_product_page_content(is_demo=False):
     demo_flag = "const isDemo = true;" if is_demo else "const isDemo = false;"
     return f"""
-    <section style="padding-top:120px; background: #f8fafc; min-height: 100vh;">
+    <section style="padding-top:140px; background: #ffffff; min-height: 100vh;" id="product-section-root">
         <div class="container">
-            <a href="index.html#inventory" class="back-btn">← BACK TO STORE</a>
-            <div id="product-detail">Loading Architecture...</div>
+            <a href="index.html#inventory" class="back-btn" style="color:var(--p); text-decoration:none; font-weight:700; display:inline-block; margin-bottom:30px;">← BACK TO STORE</a>
+            <div id="product-detail-target">Loading Engineering Data...</div>
         </div>
     </section>
     {gen_csv_parser()}
@@ -979,31 +978,31 @@ def gen_product_page_content(is_demo=False):
                 if(clean[0] === targetName || (isDemo && i===1)) {{
                     let allImgs = clean[3] ? clean[3].split('|') : ['{custom_feat}'];
                     let thumbHtml = '';
-                    allImgs.forEach(img => {{ thumbHtml += `<img src="${{img.trim()}}" class="thumb" onclick="changeImg('${{img.trim()}}')" alt="Thumb">`; }});
+                    allImgs.forEach(img => {{ thumbHtml += `<img src="${{img.trim()}}" class="thumb" onclick="changeImg('${{img.trim()}}')" style="width:60px; height:60px; object-fit:cover; margin-right:10px; cursor:pointer; border-radius:8px; border:1px solid #ddd;">`; }});
                     
                     let mainMedia = `<img src="${{allImgs[0]}}" id="main-img" style="width:100%; border-radius:16px; height:450px; object-fit:cover; box-shadow: 0 10px 30px rgba(0,0,0,0.1);" alt="${{clean[0]}}">`;
                     
                     let stripe = (clean.length > 4 && clean[4].includes('http') && !clean[4].match(/\\.(jpg|jpeg|png|gif|webp)$/i)) ? clean[4] : '';
-                    let btnAction = stripe ? `<a href="${{stripe}}" class="btn btn-accent" style="width:100%; height:3.5rem;">BUY NOW</a>` : `<button onclick="addToCart('${{clean[0]}}', '${{clean[1]}}')" class="btn btn-accent" style="width:100%; height:3.5rem;">ADD TO CART</button>`;
+                    let btnAction = stripe ? `<a href="${{stripe}}" class="btn btn-accent" style="width:100%; text-decoration:none; display:flex; align-items:center; justify-content:center; height:3.5rem;">BUY NOW</a>` : `<button onclick="addToCart('${{clean[0]}}', '${{clean[1]}}')" class="btn btn-accent" style="width:100%; height:3.5rem;">ADD TO CART</button>`;
                     
-                    document.getElementById('product-detail').innerHTML = `
-                        <div class="detail-view">
+                    document.getElementById('product-detail-target').innerHTML = `
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap:50px; align-items:start;">
                             <div>
                                 ${{mainMedia}}
-                                <div class="gallery-thumbs">${{thumbHtml}}</div>
+                                <div style="display:flex; margin-top:15px; overflow-x:auto; padding-bottom:10px;">${{thumbHtml}}</div>
                             </div>
                             <div>
-                                <h1 style="font-size:2.8rem; line-height:1.1; margin-bottom:0.5rem; color:var(--p);">${{clean[0]}}</h1>
-                                <span class="product-price-tag" style="font-size:1.8rem;">${{clean[1]}}</span>
-                                <div class="product-meta-box" style="margin-top:1.5rem; border:none; background:transparent; padding:0;">
+                                <h1 style="font-size:3rem; line-height:1; margin-bottom:10px; color:var(--primary); font-family:sans-serif;">${{clean[0]}}</h1>
+                                <div style="font-size:2rem; color:#059669; font-weight:800; margin-bottom:20px;">${{clean[1]}}</div>
+                                <div style="line-height:1.6; color:#475569; font-size:1.05rem;">
                                     ${{parseMarkdown(clean[2])}}
                                 </div>
-                                <div style="margin-top:2rem;">${{btnAction}}</div>
-                                <div style="margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid #eee;">
-                                    <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">Share with Decision Makers:</p>
-                                    <div class="share-row">
-                                        <a href="https://wa.me/?text=Check%20this%20out:%20${{encodeURIComponent(window.location.href)}}" target="_blank" class="share-btn bg-wa"><svg viewBox="0 0 24 24" fill="white" width="18"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.15l-.3-.17l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24m-3.53 3.16c-.13 0-.35.05-.54.26c-.19.2-.72.7-.72 1.72s.73 2.01.83 2.14c.1.13 1.44 2.19 3.48 3.07c.49.21.87.33 1.16.43c.49.16.94.13 1.29.08c.4-.06 1.21-.5 1.38-.98c.17-.48.17-.89.12-.98c-.05-.09-.18-.13-.37-.23c-.19-.1-.1.13-.1.13s-1.13-.56-1.32-.66c-.19-.1-.32-.15-.45.05c-.13.2-.51.65-.62.78c-.11.13-.23.15-.42.05c-.19-.1-.8-.3-1.53-.94c-.57-.5-1.02-1.12-1.21-1.45c-.11-.19-.01-.29.09-.38c.09-.08.19-.23.29-.34c.1-.11.13-.19.19-.32c.06-.13.03-.24-.01-.34c-.05-.1-.45-1.08-.62-1.48c-.16-.4-.36-.34-.51-.35c-.11-.01-.25-.01-.4-.01Z"/></svg></a>
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u=${{encodeURIComponent(window.location.href)}}" target="_blank" class="share-btn bg-fb"><svg viewBox="0 0 24 24" fill="white" width="18"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                                <div style="margin-top:30px;">${{btnAction}}</div>
+                                <div style="margin-top:40px; padding-top:20px; border-top:1px solid #eee;">
+                                    <p style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:#94a3b8; margin-bottom:15px;">Share Project Specifications:</p>
+                                    <div style="display:flex; gap:10px;">
+                                        <a href="https://wa.me/?text=${{encodeURIComponent(window.location.href)}}" target="_blank" style="background:#25D366; width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; color:white; text-decoration:none;">WA</a>
+                                        <a href="https://www.facebook.com/sharer/sharer.php?u=${{encodeURIComponent(window.location.href)}}" target="_blank" style="background:#1877F2; width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; color:white; text-decoration:none;">FB</a>
                                     </div>
                                 </div>
                             </div>
